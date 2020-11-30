@@ -12,7 +12,7 @@ public class Requirement {
     private MyDate deadline;
     private MyDate estimate;
     private int timeSpent;
-    //TODO private Team team;
+    //TODO private TeamMember teamMember;
 
     public static final String STATUS_UNASSIGNED = "Unassigned";
     public static final String STATUS_IN_PROCESS = "In Process";
