@@ -12,7 +12,8 @@ public class Task {
   private MyDate deadline;
   private MyDate estimate;
   private int timeSpent;
-  //TODO private Team team;
+  private TeamMember teamMember;
+  //TODO private TeamMember teamMember;
 
 
   public static final String STATUS_NOT_STARTED = "Not started";
