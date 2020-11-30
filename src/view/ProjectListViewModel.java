@@ -2,13 +2,13 @@ package view;
 
 import javafx.collections.*;
 import model.Project;
-import model.ProjectListModel;
+import model.PMSModel;
 
 public class ProjectListViewModel {
     private ObservableList<ProjectViewModel> projectList;
-    private ProjectListModel model;
+    private PMSModel model;
 
-    public ProjectListViewModel(ProjectListModel model) {
+    public ProjectListViewModel(PMSModel model) {
         this.model = model;
         this.projectList = FXCollections.observableArrayList();
         update();
