@@ -5,7 +5,10 @@ import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.layout.Region;
 
+import model.Project;
 import model.ProjectListModel;
+
+import java.util.Optional;
 
 public class ProjectListViewController {
     // projects tab
@@ -76,7 +79,32 @@ public class ProjectListViewController {
 
     @FXML
     private void removeProjectButton() {
+        try {
+            ProjectViewModel selectItem = projectListTable.getSelectionModel().getSelectedItem();
 
+            if (confirmation()) {
+                Project project = model.getProject(selectItem.getIdProperty().get());
+                model.removeProject(project);
+                viewModel.removeProject(project);
+                projectListTable.getSelectionModel().clearSelection();
+            }
+        } catch (Exception e) {
+            errorLabel.setText("Item not found: " + e.getMessage());
+        }
+    }
+
+    public boolean confirmation() {
+        ProjectViewModel selectedItem = projectListTable.getSelectionModel().getSelectedItem();
+
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+        alert.setTitle("Confirmation");
+        alert.setHeaderText(
+                "Removing project { " +
+                        selectedItem.getNameProperty().get() + ": " +
+                        selectedItem.getIdProperty().get() + " }");
+
+        Optional<ButtonType> result = alert.showAndWait();
+        return result.isPresent() && result.get() == ButtonType.OK;
     }
 
     // TODO add methods for employeeList
