@@ -12,7 +12,7 @@ public class Task {
     private MyDate estimate;
     private int timeSpent;
 
-    //TODO private Team team;
+    //TODO private TeamMember teamMember;
 
     public static final String STATUS_NOT_STARTED = "Not started";
     public static final String STATUS_IN_PROCESS = "In Process";
