@@ -11,15 +11,16 @@ public class Task {
     private MyDate deadline;
     private MyDate estimate;
     private int timeSpent;
+    private TeamMember teamMember;
 
-    //TODO private TeamMember teamMember;
+
 
     public static final String STATUS_NOT_STARTED = "Not started";
     public static final String STATUS_IN_PROCESS = "In Process";
     public static final String STATUS_COMPLETED = "Completed";
 
     //TODO implement MyDate estimate
-    public Task(String title, String status, String type, String description, MyDate deadline) {//, MyDate estimate) {
+    public Task(String title, String status, String type, String description, MyDate deadline, TeamMember teamMember) {//, MyDate estimate) {
         this.id = createTaskID();
 
         setTitle(title);
@@ -28,6 +29,7 @@ public class Task {
         setDeadline(deadline);
         //setEstimate(estimate);
         this.timeSpent = 0;
+        this.teamMember=teamMember;
 
     }
 
@@ -48,6 +50,13 @@ public class Task {
 
     public String getStatus() {
         return status;
+    }
+
+    public TeamMember getTeamMember(){
+        return this.teamMember;
+    }
+    public void setTeamMember(TeamMember teamMember) {
+        this.teamMember=teamMember;
     }
 
     public void setStatus(String status) {

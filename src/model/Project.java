@@ -12,7 +12,8 @@ public class Project {
     private int timeSpent;
 
     private RequirementList requirementList;
-    //TODO private Team team;
+    private Team team;
+
 
     public static final String STATUS_CREATED = "Created";
     public static final String STATUS_IN_PROCESS = "In process";
@@ -97,7 +98,12 @@ public class Project {
     //public Team getTeam(){}
 
     //TODO public ProductOwner getProductOwner(){}
+
+
     //TODO public ScrumMaster getScrumMaster(){}
+
+
+
 
     private static String createProjectID() {
         Random random = new Random(System.currentTimeMillis());

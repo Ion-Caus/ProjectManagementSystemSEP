@@ -12,7 +12,10 @@ public class Requirement {
     private MyDate deadline;
     private MyDate estimate;
     private int timeSpent;
-    //TODO private TeamMember teamMember;
+    private TaskList taskList;
+    private TeamMember teamMember;
+
+
 
     public static final String STATUS_UNASSIGNED = "Unassigned";
     public static final String STATUS_IN_PROCESS = "In Process";
@@ -58,6 +61,10 @@ public class Requirement {
     public String getStatus() {
         return status;
     }
+
+    public TeamMember getTeamMember(){return this.teamMember;}
+
+    public void setTeamMember(TeamMember teamMember){this.teamMember=teamMember;}
 
     public void setStatus(String status) {
         if (status == null || !validStatus(status)) {
