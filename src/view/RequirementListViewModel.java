@@ -22,7 +22,7 @@ public class RequirementListViewModel {
     public void update() {
         requirementList.clear();
         for (int i = 0; i < model.requirementListSize(); i++) {
-            requirementList.add(new RequirementViewModel(model.getFocusProject().getRequirementList().getRequirement(i)));
+            requirementList.add(new RequirementViewModel(model.getRequirement(i)));
         }
     }
 

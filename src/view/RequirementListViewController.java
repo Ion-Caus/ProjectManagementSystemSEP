@@ -51,6 +51,21 @@ public class RequirementListViewController {
     public Region getRoot() {
         return root;
     }
+
+    @FXML
+    private void openTaskList(){
+        try {
+            RequirementViewModel selectItem = requirementListTable.getSelectionModel().getSelectedItem();
+
+            //Setting the focusRequirement by getting the requirement by its ID
+            model.setFocusRequirement(model.getRequirement(selectItem.getIdProperty().get()));
+            model.setAdding(false);
+            viewHandler.openView("TaskListView");
+        }
+        catch (Exception e) {
+            errorLabel.setText("Please select an item");
+        }
+    }
     
     @FXML
     private void addRequirementButton() {
@@ -63,7 +78,7 @@ public class RequirementListViewController {
         try {
             RequirementViewModel selectItem = requirementListTable.getSelectionModel().getSelectedItem();
 
-            //Setting the focusRequirement by getting the requirement its by ID
+            //Setting the focusRequirement by getting the requirement by its ID
             model.setFocusRequirement(model.getRequirement(selectItem.getIdProperty().get()));
             model.setAdding(false);
             viewHandler.openView("RequirementView");
@@ -78,11 +93,10 @@ public class RequirementListViewController {
 
     }
 
-
     @FXML
     private void backButtonPressed() {
         model.setAdding(false);
-        viewHandler.openView("ProjectView");
+        viewHandler.openView("ProjectListView");
     }
 
 }

@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+<VBox prefHeight="400.0" prefWidth="600.0" userData="Task List" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="view.TaskListViewController">
+   <children>
+      <HBox prefHeight="403.0" prefWidth="600.0">
+         <children>
+            <VBox alignment="CENTER" prefHeight="372.0" prefWidth="222.0" spacing="10.0">
+               <children>
+                  <VBox alignment="BOTTOM_CENTER" prefHeight="293.0" prefWidth="190.0" spacing="20.0">
+                     <children>
+                        <Button mnemonicParsing="false" onAction="#addTaskButton" prefWidth="65.0" text="Add" />
+                        <Button mnemonicParsing="false" onAction="#removeTaskButton" prefWidth="65.0" text="Remove" />
+                        <Button mnemonicParsing="false" onAction="#viewTaskButton" prefWidth="65.0" text="View" />
+                     </children>
+                     <padding>
+                        <Insets bottom="20.0" />
+                     </padding>
+                  </VBox>
+                  <Label fx:id="errorLabel" alignment="TOP_LEFT" prefHeight="140.0" prefWidth="200.0" text="Error Label" textFill="#ff1313" textOverrun="CLIP" wrapText="true">
+                     <padding>
+                        <Insets left="10.0" right="10.0" top="5.0" />
+                     </padding>
+                     <font>
+                        <Font size="14.0" />
+                     </font>
+                  </Label>
+                  <Button mnemonicParsing="false" onAction="#backButtonPressed" prefWidth="65.0" text="Back" />
+               </children>
+               <padding>
+                  <Insets bottom="20.0" />
+               </padding>
+            </VBox>
+            <TableView fx:id="taskListTable" prefHeight="400.0" prefWidth="500.0">
+               <columns>
+                  <TableColumn fx:id="idTaskColumn" prefWidth="71.0" text="ID" />
+                  <TableColumn fx:id="titleTaskColumn" minWidth="0.0" prefWidth="150.0" text="Title" />
+                  <TableColumn fx:id="statusTaskColumn" minWidth="0.0" prefWidth="98.0" text="Status" />
+                  <TableColumn fx:id="deadlineTaskColumn" minWidth="0.0" prefWidth="136.1612548828125" text="Deadline" />
+               </columns>
+            </TableView>
+         </children>
+      </HBox>
+   </children>
+</VBox>
