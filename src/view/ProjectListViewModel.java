@@ -1,6 +1,7 @@
 package view;
 
 import javafx.collections.*;
+
 import model.Project;
 import model.PMSModel;
 
@@ -29,7 +30,6 @@ public class ProjectListViewModel {
         projectList.add(new ProjectViewModel(project));
     }
 
-    // TODO     maybe try .remove(requirement)
     public void removeProject(Project project) {
         for (int i = 0; i < projectList.size(); i++) {
             if (projectList.get(i).getIdProperty().get().equals(project.getId())) {
