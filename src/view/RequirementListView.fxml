@@ -2,21 +2,24 @@
 
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.*?>
-<?import javafx.scene.layout.HBox?>
-<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.layout.*?>
 <?import javafx.scene.text.Font?>
 <VBox alignment="CENTER" prefHeight="400.0" prefWidth="780.0" spacing="10.0" userData="Requirement List" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="view.RequirementListViewController">
    <children>
       <HBox prefHeight="403.0" prefWidth="600.0">
          <children>
-            <VBox prefHeight="372.0" prefWidth="222.0" spacing="10.0">
+            <VBox alignment="CENTER" prefHeight="372.0" prefWidth="222.0" spacing="10.0">
                <children>
                   <VBox alignment="BOTTOM_CENTER" prefHeight="293.0" prefWidth="190.0" spacing="20.0">
                      <children>
                         <Button mnemonicParsing="false" onAction="#addRequirementButton" prefWidth="65.0" text="Add" />
                         <Button mnemonicParsing="false" onAction="#removeRequirementButton" prefWidth="65.0" text="Remove" />
                         <Button mnemonicParsing="false" onAction="#viewRequirementButton" prefWidth="65.0" text="View" />
-                        <Button mnemonicParsing="false" onAction="#backButtonPressed" prefWidth="65.0" text="Back" />
+                        <Button mnemonicParsing="false" onAction="#openTaskList" prefWidth="70.0" text="Task List">
+                           <VBox.margin>
+                              <Insets top="15.0" />
+                           </VBox.margin>
+                        </Button>
                      </children>
                      <padding>
                         <Insets bottom="20.0" />
@@ -30,6 +33,7 @@
                         <Font size="14.0" />
                      </font>
                   </Label>
+                  <Button mnemonicParsing="false" onAction="#backButtonPressed" prefWidth="65.0" text="Back" />
                </children>
                <padding>
                   <Insets bottom="20.0" />

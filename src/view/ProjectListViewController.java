@@ -1,12 +1,10 @@
 package view;
 
 import javafx.fxml.FXML;
-
 import javafx.scene.control.*;
 import javafx.scene.layout.Region;
-
-import model.Project;
 import model.PMSModel;
+import model.Project;
 
 import java.util.Optional;
 
@@ -68,7 +66,7 @@ public class ProjectListViewController {
         try {
             ProjectViewModel selectItem = projectListTable.getSelectionModel().getSelectedItem();
 
-            //Setting the focusProject by getting the project its by ID
+            //Setting the focusProject by getting the project by its ID
             model.setFocusProject(model.getProject(selectItem.getIdProperty().get()));
             model.setAdding(false);
             viewHandler.openView("ProjectView");
@@ -107,6 +105,21 @@ public class ProjectListViewController {
 
         Optional<ButtonType> result = alert.showAndWait();
         return result.isPresent() && result.get() == ButtonType.OK;
+    }
+
+    @FXML
+    private void openRequirementList(){
+        try {
+            ProjectViewModel selectItem = projectListTable.getSelectionModel().getSelectedItem();
+
+            //Setting the focusProject by getting the project by its ID
+            model.setFocusProject(model.getProject(selectItem.getIdProperty().get()));
+            model.setAdding(false);
+            viewHandler.openView("RequirementListView");
+        }
+        catch (Exception e) {
+            errorLabel.setText("Please select an item");
+        }
     }
 
     // TODO add methods for employeeList

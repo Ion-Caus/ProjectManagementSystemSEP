@@ -12,10 +12,9 @@ public class Requirement {
     private MyDate deadline;
     private MyDate estimate;
     private int timeSpent;
+
     private TaskList taskList;
-    private TeamMember teamMember;
-
-
+    //TODO private TeamMember teamMember;
 
     public static final String STATUS_UNASSIGNED = "Unassigned";
     public static final String STATUS_IN_PROCESS = "In Process";
@@ -27,7 +26,6 @@ public class Requirement {
     public static final String TYPE_NON_FUNCTIONAL = "Non-functional";
     public static final String TYPE_PROJECT_RELATED = "Project Related";
 
-    // TODO use .copy to MyDate class
 
     //TODO implement MyDate estimate
     public Requirement(String title, String status, String type, String description, MyDate deadline) {//, MyDate estimate) {
@@ -41,6 +39,7 @@ public class Requirement {
         //setEstimate(estimate);
         this.timeSpent = 0;
 
+        this.taskList = new TaskList();
     }
 
     public String getId() {
@@ -61,10 +60,6 @@ public class Requirement {
     public String getStatus() {
         return status;
     }
-
-    public TeamMember getTeamMember(){return this.teamMember;}
-
-    public void setTeamMember(TeamMember teamMember){this.teamMember=teamMember;}
 
     public void setStatus(String status) {
         if (status == null || !validStatus(status)) {
@@ -90,6 +85,10 @@ public class Requirement {
 
     public void setDescription(String description) {
         this.description = (description == null) ? "" : description;
+    }
+
+    public TaskList getTaskList() {
+        return taskList;
     }
 
     public MyDate getDeadline() {
@@ -148,6 +147,7 @@ public class Requirement {
                 ", deadline=" + deadline +
                 ", estimate=" + estimate +
                 ", timeSpent=" + timeSpent +
+                ", taskList=" + taskList +
                 '}';
     }
 }
