@@ -4,10 +4,9 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.layout.Region;
-
 import model.MyDate;
-import model.Project;
 import model.PMSModel;
+import model.Project;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
@@ -21,6 +20,8 @@ public class ProjectViewController {
     @FXML private Label errorLabel;
 
     @FXML private Button openReqListButton;
+
+    @FXML private TextField teamMembersInputField;
 
     private ViewHandler viewHandler;
     private PMSModel model;
@@ -83,6 +84,11 @@ public class ProjectViewController {
             openReqListButton.setDisable(false);
         }
         errorLabel.setText("");
+
+        //add TeamMembers
+        //TODO sent the employee List
+        //String[] teamMembers = {"Ion", "Denis", "Ion C", "Sergiu"};
+        //TextFields.bindAutoCompletion(teamMembersInputField, teamMembers);
 
         //formatting the DatePicker from MM/dd/yyyy to dd/MM/yyyy
         deadlinePicker.getEditor().setText(
@@ -147,5 +153,10 @@ public class ProjectViewController {
         if (event.getSource() == nameField) {
             submitButtonPressed();
         }
+    }
+
+    @FXML
+    private void addTeamMemberButton() {
+
     }
 }
