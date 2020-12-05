@@ -10,7 +10,9 @@ public class Task {
     private String description;
     private MyDate deadline;
     private MyDate estimate;
-    private int timeSpent;
+    //private int timeSpent;
+    private TeamMember teamMember;
+    private TimeContainer timeContainer;
 
     //TODO private TeamMember teamMember;
 
@@ -27,8 +29,11 @@ public class Task {
         setDescription(description);
         setDeadline(deadline);
         //setEstimate(estimate);
-        this.timeSpent = 0;
 
+    }
+
+    public void setTeamMember(TeamMember teamMember) {
+        this.teamMember = teamMember;
     }
 
     public String getId() {
@@ -87,22 +92,28 @@ public class Task {
         this.estimate = estimate.copy();
     }
 
-    public int getTimeSpent() {
+
+// TODO: 05/12/2020 remove
+  /*  public int getTimeSpent() {
         return timeSpent;
     }
 
     public void setTimeSpent(int timeSpent) {
         this.timeSpent = timeSpent;
-    }
+    }*/
 
     private static String createTaskID() {
         Random random = new Random(System.currentTimeMillis());
-        return  "T" + (10000 + random.nextInt(100000));
+        return "T" + (10000 + random.nextInt(100000));
     }
 
     private static boolean validStatus(String status) {
-        String[] statuses = {STATUS_NOT_STARTED,STATUS_IN_PROCESS,STATUS_COMPLETED};
+        String[] statuses = {STATUS_NOT_STARTED, STATUS_IN_PROCESS, STATUS_COMPLETED};
         return Arrays.asList(statuses).contains(status);
+    }
+
+    public TeamMember getTeamMember() {
+        return teamMember;
     }
 
     @Override
@@ -114,7 +125,22 @@ public class Task {
                 ", description='" + description + '\'' +
                 ", deadline=" + deadline +
                 ", estimate=" + estimate +
-                ", timeSpent=" + timeSpent +
+                ", timeSpent=" + timeContainer.getTimeWorked() +
                 '}';
     }
+
+
+    public void addTimeSpent(TeamMember teamMember) {
+
+    }
+
+    public double getTimeSpent(TeamMember teamMember){
+       return this.timeContainer.getTimeWorked(teamMember);
+    }
+
+    public double getTimeSpent(){
+       return this.timeContainer.getTimeWorked();
+    }
+
+
 }

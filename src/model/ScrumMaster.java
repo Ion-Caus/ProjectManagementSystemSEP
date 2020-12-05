@@ -14,6 +14,20 @@ public class ScrumMaster extends TeamMember{
         return requirement.getTeamMember();
     }
 
+
+
+    public double getTimeSpentOn(TeamMember teamMember, Task task){
+       return task.getTimeSpent(teamMember);
+    }
+
+    public double getTimeSpentOn(Requirement requirement){
+        return requirement.getTimeSpent();
+    }
+
+    public double getTimeSpentOn(Task task){
+       return task.getTimeSpent();    }
+
+
     public void addDeadlineTo(Requirement requirement, MyDate deadline){
         requirement.setDeadline(deadline);
     }
@@ -38,4 +52,6 @@ public class ScrumMaster extends TeamMember{
     public void addTeamMemberTo(Requirement requirement, TeamMember teamMember){
         requirement.setTeamMember(teamMember);
     }
+
+
 }

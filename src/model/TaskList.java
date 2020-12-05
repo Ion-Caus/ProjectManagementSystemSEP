@@ -38,4 +38,14 @@ public class TaskList {
     return taskList;
   }
 
+  public double getTimeSpent(){
+    double minutes=0;
+    for (Task task: taskList){
+      minutes+= task.getTimeSpent();
+    }
+    return minutes;
+
+
+  }
+
 }

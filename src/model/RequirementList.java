@@ -38,4 +38,13 @@ public class RequirementList {
         return requirementList;
     }
 
+    public double getTimeSpent(){
+       double minutes=0;
+       for (Requirement requirement:requirementList){
+          minutes+=requirement.getTimeSpent();
+       }
+       return minutes;
+
+    }
+
 }

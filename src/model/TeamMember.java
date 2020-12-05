@@ -4,23 +4,24 @@ import java.util.ArrayList;
 
 public class TeamMember {
     private String name;
-    private ArrayList<Task> taskForTeamMember;
-    private ArrayList<Requirement> requirementsForTeamMember;
+
 
     public TeamMember(String name) {
-        this.taskForTeamMember = new ArrayList<>();
-        this.taskForTeamMember = new ArrayList<>();
         setName(name);
     }
 
-    public void addTask(Task task) {
+    public void addTask(Task task, Requirement requirement) {
         if (this instanceof ScrumMaster) {
             throw  new IllegalArgumentException("You can't assign a task to a Scrum master");
         }
         else if(this instanceof ProductOwner){
             throw new IllegalArgumentException("You can't assign a task to a Product owner");
         }
-        taskForTeamMember.add(task);
+       requirement.getTaskList().addTask(task);
+    }
+
+    public void removeTask(Task task, Requirement requirement){
+        requirement.getTaskList().removeTask(task);
     }
 
 
@@ -45,21 +46,15 @@ public class TeamMember {
         requirement.setStatus(Requirement.STATUS_WAITING_FOR_APPROVAL);
     }
 
-    public void addTimeSpentOnTask(Task task, int timeSpent){
+   /* public void addTimeSpentOnTask(Task task, int hours, int minutes){
         task.setTimeSpent(timeSpent);
+    }*/
+
+    public void  addTimeSpentOnRequirement(Requirement requirement, int minutes, int hours){
+        requirement.setTimeSpent(minutes, hours);
     }
 
-    public void  addTimeSpentOnRequirement(Requirement requirement, int timeSpent){
-        requirement.setTimeSpent(timeSpent);
-    }
 
-    public ArrayList<Task> getTaskList(Project project){
-        return taskForTeamMember;
-    }
-
-    public ArrayList<Requirement> getRequirementList(Project project){
-        return requirementsForTeamMember;
-    }
 
 
 

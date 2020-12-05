@@ -11,7 +11,19 @@ public class Requirement {
     private String description;
     private MyDate deadline;
     private MyDate estimate;
-    private int timeSpent;
+    //private int timeSpent;
+    private Time time;
+    private TeamMember teamMember;
+
+    public TeamMember getTeamMember() {
+        return teamMember;
+    }
+
+
+
+    public void setTeamMember(TeamMember teamMember) {
+        this.teamMember = teamMember;
+    }
 
     private TaskList taskList;
     //TODO private TeamMember teamMember;
@@ -37,7 +49,8 @@ public class Requirement {
         setDescription(description);
         setDeadline(deadline);
         //setEstimate(estimate);
-        this.timeSpent = 0;
+
+
 
         this.taskList = new TaskList();
     }
@@ -113,12 +126,13 @@ public class Requirement {
         this.estimate = estimate.copy();
     }
 
-    public int getTimeSpent() {
-        return timeSpent;
-    }
+    /*public int getTimeSpent() {
+        return this.time.getTimeWorked();
+            }*/
+    // TODO: discuss wit Ion, the double value for that is supposed to be here will fuck some things up in the gui
 
-    public void setTimeSpent(int timeSpent) {
-        this.timeSpent = timeSpent;
+    public void setTimeSpent(int minutes, int hours) {
+        this.time.setTime(minutes, hours);
     }
 
     private static String createReqID() {
@@ -146,8 +160,14 @@ public class Requirement {
                 ", description='" + description + '\'' +
                 ", deadline=" + deadline +
                 ", estimate=" + estimate +
-                ", timeSpent=" + timeSpent +
+                ", timeSpent=" +    this.getTimeSpent() +
                 ", taskList=" + taskList +
                 '}';
     }
+
+    public double getTimeSpent(){
+       return this.taskList.getTimeSpent();
+    }
+
+
 }

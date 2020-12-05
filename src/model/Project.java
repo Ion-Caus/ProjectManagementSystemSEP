@@ -9,7 +9,7 @@ public class Project {
     private String status;
     private MyDate deadline;
     private MyDate estimate;
-    private int timeSpent;
+    private String description;
 
     private RequirementList requirementList;
     private Team team;
@@ -27,9 +27,17 @@ public class Project {
         setStatus(status);
         setDeadline(deadline);
         //setEstimate(estimate);
-        this.timeSpent = 0;
+
 
         this.requirementList = new RequirementList();
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
     }
 
     public String getId() {
@@ -85,13 +93,9 @@ public class Project {
         this.estimate = estimate.copy();
     }
 
-    public int getTimeSpent() {
-        return timeSpent;
-    }
 
-    public void setTimeSpent(int timeSpent) {
-        this.timeSpent = timeSpent;
-    }
+
+
 
     //TODO
     //public void setTeam(){}
@@ -123,8 +127,12 @@ public class Project {
                 ", status='" + status + '\'' +
                 ", deadline=" + deadline +
                 ", estimate=" + estimate +
-                ", timeSpent=" + timeSpent +
+                ", timeSpent=" + getTimeSpent() +
                 ", requirementList=" + requirementList +
                 '}';
+    }
+
+    public double getTimeSpent(){
+       return this.getRequirementList().getTimeSpent();
     }
 }

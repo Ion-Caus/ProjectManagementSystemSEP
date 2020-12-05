@@ -78,7 +78,7 @@ public class ProjectViewController {
                     ));
 
             idField.setText(model.getFocusProject().getId());
-            hoursWorkedField.setText(Integer.toString(model.getFocusProject().getTimeSpent()));
+            hoursWorkedField.setText(Double.toString(model.getFocusProject().getTimeSpent()));
 
             // Open Requirement List Button
             openReqListButton.setDisable(false);

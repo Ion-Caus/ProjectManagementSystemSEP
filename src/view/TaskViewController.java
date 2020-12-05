@@ -74,7 +74,7 @@ public class TaskViewController {
                     ));
 
             idField.setText(model.getFocusTask().getId());
-            hoursWorkedField.setText(Integer.toString(model.getFocusTask().getTimeSpent()));
+            hoursWorkedField.setText(Double.toString(model.getFocusTask().getTimeSpent()));
         }
         errorLabel.setText("");
 

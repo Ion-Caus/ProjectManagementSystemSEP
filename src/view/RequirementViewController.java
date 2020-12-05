@@ -91,7 +91,7 @@ public class RequirementViewController {
                     ));
 
             idField.setText(model.getFocusRequirement().getId());
-            hoursWorkedField.setText(Integer.toString(model.getFocusRequirement().getTimeSpent()));
+            hoursWorkedField.setText(Double.toString(model.getFocusRequirement().getTimeSpent()));
 
             // Open Task List Button
             openTaskListButton.setDisable(false);
