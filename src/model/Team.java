@@ -3,49 +3,24 @@ package model;
 import java.util.ArrayList;
 
 public class Team {
-    private ArrayList<TeamMember> teamMemberList;
-    //TODO add Scrum master and Product owner, just one dont forget to check
-    //private ScrumMaster scrumMaster;
-    //private ProductOwner productOwner;
+    private ArrayList<TeamMember> teamMember=new ArrayList<TeamMember>();
 
-    public Team() {
-        this.teamMemberList = new ArrayList<>();
+    public void addTeamMember(TeamMember teamMember){
+       try {
+           this.teamMember.add(teamMember);
+       }
+       catch (Exception e){
+           System.out.println(e);
+
+       }
     }
 
-    public int size() {
-        return teamMemberList.size();
+    public void removeTeamMember(TeamMember teamMember){
+        this.teamMember.remove(teamMember);
     }
 
-    public void addTeamMember(TeamMember teamMember) {
-        teamMemberList.add(teamMember);
+    public TeamMember getTeamMember(String name){
+       return this.teamMember.get(teamMember.indexOf(name));
     }
 
-    public void removeTeamMember(TeamMember teamMember) {
-        teamMemberList.remove(teamMember);
-    }
-
-    public TeamMember getTeamMember(String name) {
-        for (TeamMember teamMember: teamMemberList) {
-            if (teamMember.getName().equals(name)) {
-                return teamMember;
-            }
-        }
-        throw new IllegalArgumentException("No person with the name \"" + name +"\"");
-    }
-    public TeamMember getTeamMember(int index) {
-        return teamMemberList.get(index);
-    }
-
-    public ArrayList<TeamMember> getTeamMemberList() {
-        return teamMemberList;
-    }
-
-    public ArrayList<String> getTeamMemberNameList() {
-        ArrayList<String> names = new ArrayList<>();
-
-        for (TeamMember teamMember: teamMemberList) {
-            names.add(teamMember.getName());
-        }
-        return names;
-    }
 }
