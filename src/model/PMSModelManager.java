@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 public class PMSModelManager implements PMSModel {
     private ProjectList projectList;
+    private Team employeeList;
 
     private Project focusProject;
     private Requirement focusRequirement;
@@ -13,6 +14,7 @@ public class PMSModelManager implements PMSModel {
 
     public PMSModelManager() {
         this.projectList = new ProjectList();
+        this.employeeList = new Team();
         this.adding = false;
     }
 
@@ -27,6 +29,70 @@ public class PMSModelManager implements PMSModel {
         this.adding = status;
     }
     //-------------------------------------
+
+    //-------Employee-------
+    @Override
+    public int employeeListSize() {
+        return employeeList.size();
+    }
+
+    @Override
+    public void addEmployee(TeamMember teamMember) {
+        employeeList.addTeamMember(teamMember);
+    }
+
+    @Override
+    public void removeEmployee(TeamMember teamMember) {
+        employeeList.removeTeamMember(teamMember);
+    }
+
+    @Override
+    public TeamMember getTeamMember(String name) {
+        if (name == null || name.isEmpty()) {
+            throw new IllegalArgumentException("Please enter the team member's name");
+        }
+
+        try {
+            return focusProject.getTeam().getTeamMember(name);
+        }
+        catch (IllegalArgumentException e) {
+            throw new IllegalArgumentException("No team member with the name \"" + name + "\" in project's team.");
+        }
+    }
+
+    @Override
+    public TeamMember getTeamMember(int index) {
+        return focusProject.getTeam().getTeamMember(index);
+    }
+
+    @Override
+    public TeamMember getEmployee(String name) {
+        if (name == null || name.isEmpty()) {
+            throw new IllegalArgumentException("Please enter the employee's name");
+        }
+
+        try {
+            return employeeList.getTeamMember(name);
+        }
+        catch (IllegalArgumentException e) {
+            throw new IllegalArgumentException("No employee with the name \"" + name + "\" in your employee list.");
+        }
+    }
+
+    @Override
+    public TeamMember getEmployee(int index) {
+        return employeeList.getTeamMember(index);
+    }
+
+    @Override
+    public ArrayList<TeamMember> getEmployeeList() {
+        return employeeList.getTeamMemberList();
+    }
+
+    @Override
+    public ArrayList<String> getEmployeeNameList() {
+        return employeeList.getTeamMemberNameList();
+    }
 
 
     //-------Project-------

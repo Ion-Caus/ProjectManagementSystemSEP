@@ -1,11 +1,12 @@
 package view;
 
 import javafx.fxml.FXML;
-import javafx.scene.control.Label;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
+import javafx.scene.control.*;
 import javafx.scene.layout.Region;
 import model.PMSModel;
+import model.Task;
+
+import java.util.Optional;
 
 public class TaskListViewController {
     @FXML
@@ -14,6 +15,8 @@ public class TaskListViewController {
     @FXML private TableColumn<TaskViewModel, String> titleTaskColumn;
     @FXML private TableColumn<TaskViewModel, String> statusTaskColumn;
     @FXML private TableColumn<TaskViewModel, String> deadlineTaskColumn;
+    @FXML private TableColumn<TaskViewModel, String> estimateTaskColumn;
+    @FXML private TableColumn<TaskViewModel, String> responsibleTeamMemberTaskColumn;
     @FXML private Label errorLabel;
 
     private ViewHandler viewHandler;
@@ -36,6 +39,8 @@ public class TaskListViewController {
         titleTaskColumn.setCellValueFactory(cellDate -> cellDate.getValue().getTitleProperty());
         statusTaskColumn.setCellValueFactory(cellDate -> cellDate.getValue().getStatusProperty());
         deadlineTaskColumn.setCellValueFactory(cellDate -> cellDate.getValue().getDeadlineProperty());
+        estimateTaskColumn.setCellValueFactory(cellData -> cellData.getValue().getEstimateProperty());
+        responsibleTeamMemberTaskColumn.setCellValueFactory(cellData -> cellData.getValue().getResponsibleTeamMemberProperty());
         taskListTable.setItems(viewModel.getTaskList());
 
         errorLabel.setText("");
@@ -73,7 +78,33 @@ public class TaskListViewController {
 
     @FXML
     private void removeTaskButton() {
+        try {
+            TaskViewModel selectItem = taskListTable.getSelectionModel().getSelectedItem();
 
+            if (confirmation()) {
+                Task task = model.getTask(selectItem.getIdProperty().get());
+                model.removeTask(task);
+                viewModel.removeTask(task);
+                taskListTable.getSelectionModel().clearSelection();
+            }
+        } catch (Exception e) {
+            errorLabel.setText("Please select an item");
+        }
+    }
+
+    public boolean confirmation() {
+        TaskViewModel selectedItem = taskListTable.getSelectionModel().getSelectedItem();
+
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+        alert.setTitle("Confirmation");
+        alert.setHeaderText(
+                "Removing the task \"" +
+                        selectedItem.getTitleProperty().get() + "\"\n" +
+                        "with the id: " + selectedItem.getIdProperty().get()
+        );
+
+        Optional<ButtonType> result = alert.showAndWait();
+        return result.isPresent() && result.get() == ButtonType.OK;
     }
 
     @FXML

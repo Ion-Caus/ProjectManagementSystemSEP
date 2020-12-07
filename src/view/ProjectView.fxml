@@ -17,7 +17,7 @@
       <Separator prefWidth="200.0" />
       <HBox prefHeight="303.0" prefWidth="600.0">
          <children>
-            <VBox prefHeight="321.0" prefWidth="370.0">
+            <VBox prefHeight="321.0" prefWidth="370.0" spacing="15.0">
                <children>
                   <HBox alignment="CENTER_LEFT" prefHeight="35.0" prefWidth="370.0" spacing="10.0">
                      <children>
@@ -65,26 +65,46 @@
                         <DatePicker fx:id="deadlinePicker" editable="false" prefHeight="27.0" prefWidth="152.0" />
                      </children>
                   </HBox>
-                  <VBox alignment="TOP_CENTER" prefHeight="200.0" prefWidth="100.0">
+                  <HBox alignment="CENTER_LEFT" prefHeight="49.0" prefWidth="370.0" spacing="10.0">
                      <children>
-                        <Separator prefWidth="200.0" />
-                        <Label prefWidth="77.0" text="Team">
+                        <Label prefWidth="77.0" text="Estimate">
                            <font>
                               <Font size="18.0" />
                            </font>
+                           <padding>
+                              <Insets left="10.0" />
+                           </padding>
                         </Label>
-                        <HBox alignment="CENTER" prefHeight="40.0" prefWidth="357.0" spacing="10.0">
+                        <DatePicker fx:id="estimatePicker" editable="false" prefHeight="27.0" prefWidth="152.0" />
+                     </children>
+                  </HBox>
+                  <VBox alignment="TOP_CENTER" prefHeight="200.0" prefWidth="100.0" spacing="15.0">
+                     <children>
+                        <Separator prefWidth="200.0" />
+                        <HBox alignment="CENTER_LEFT" prefHeight="40.0" prefWidth="357.0" spacing="10.0">
                            <children>
-                              <TextField fx:id="teamMembersInputField" />
-                              <Button mnemonicParsing="false" onAction="#addTeamMemberButton" prefWidth="80.0" text="Add" />
+                              <Label prefWidth="77.0" text="Team">
+                                 <font>
+                                    <Font size="18.0" />
+                                 </font>
+                                 <padding>
+                                    <Insets left="5.0" />
+                                 </padding>
+                              </Label>
+                              <Button fx:id="addTeamMemberButton" mnemonicParsing="false" onAction="#addTeamMemberButton" prefWidth="80.0" text="Add" />
                            </children>
                            <VBox.margin>
                               <Insets />
                            </VBox.margin>
                         </HBox>
+                        <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0">
+                           <VBox.margin>
+                              <Insets top="5.0" />
+                           </VBox.margin>
+                        </HBox>
                      </children>
                      <padding>
-                        <Insets left="10.0" top="20.0" />
+                        <Insets left="10.0" />
                      </padding>
                   </VBox>
                </children>

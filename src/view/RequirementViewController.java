@@ -4,9 +4,9 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.layout.Region;
-import model.MyDate;
 import model.PMSModel;
 import model.Requirement;
+import org.controlsfx.control.textfield.TextFields;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
@@ -17,11 +17,14 @@ public class RequirementViewController {
     @FXML private ComboBox<String> statusBox;
     @FXML private ComboBox<String> typeBox;
     @FXML private DatePicker deadlinePicker;
+    @FXML private DatePicker estimatePicker;
     @FXML private TextField idField;
     @FXML private TextField hoursWorkedField;
     @FXML private Label errorLabel;
 
     @FXML private Button openTaskListButton;
+
+    @FXML private TextField responsibleTeamMemberInputField;
 
     private ViewHandler viewHandler;
     private PMSModel model;
@@ -48,24 +51,32 @@ public class RequirementViewController {
 
             // Status ComboBox
             statusBox.getItems().removeAll(statusBox.getItems());
-            statusBox.getItems().addAll(Requirement.STATUS_UNASSIGNED, Requirement.STATUS_IN_PROCESS,Requirement.STATUS_WAITING_FOR_APPROVAL, Requirement.STATUS_APPROVED, Requirement.STATUS_REJECTED);
-            statusBox.getSelectionModel().select(Requirement.STATUS_UNASSIGNED);
+            statusBox.getItems().addAll(Requirement.STATUS_NOT_STARTED, Requirement.STATUS_IN_PROCESS,Requirement.STATUS_WAITING_FOR_APPROVAL, Requirement.STATUS_APPROVED, Requirement.STATUS_REJECTED);
+            statusBox.getSelectionModel().select(Requirement.STATUS_NOT_STARTED);
 
             // Type ComboBox
             typeBox.getItems().removeAll(typeBox.getItems());
             typeBox.getItems().addAll(Requirement.TYPE_FUNCTIONAL, Requirement.TYPE_NON_FUNCTIONAL, Requirement.TYPE_PROJECT_RELATED);
             typeBox.getSelectionModel().select(Requirement.TYPE_FUNCTIONAL);
 
-            // Date Picker
+            // Deadline Picker
             deadlinePicker.setEditable(false);
             // setting the default deadline in 2 weeks
             deadlinePicker.setValue(LocalDate.now().plusDays(14));
+
+            // Estimate Picker
+            estimatePicker.setEditable(false);
+            // setting the default deadline in 1 weeks
+            estimatePicker.setValue(LocalDate.now().plusDays(7));
+
+            // responsible Team Member
+            responsibleTeamMemberInputField.setText("");
 
             idField.setText("");
             hoursWorkedField.setText("");
 
             // Open Task List Button
-            openTaskListButton.setDisable(true);
+            openTaskListButton.setVisible(false);
         }
         // View button was pressed
         else {
@@ -74,7 +85,7 @@ public class RequirementViewController {
 
             // Status ComboBox
             statusBox.getItems().removeAll(statusBox.getItems());
-            statusBox.getItems().addAll(Requirement.STATUS_UNASSIGNED, Requirement.STATUS_IN_PROCESS, Requirement.STATUS_WAITING_FOR_APPROVAL, Requirement.STATUS_APPROVED, Requirement.STATUS_REJECTED);
+            statusBox.getItems().addAll(Requirement.STATUS_NOT_STARTED, Requirement.STATUS_IN_PROCESS, Requirement.STATUS_WAITING_FOR_APPROVAL, Requirement.STATUS_APPROVED, Requirement.STATUS_REJECTED);
             statusBox.getSelectionModel().select(model.getFocusRequirement().getStatus());
 
             // Type ComboBox
@@ -82,31 +93,40 @@ public class RequirementViewController {
             typeBox.getItems().addAll(Requirement.TYPE_FUNCTIONAL, Requirement.TYPE_NON_FUNCTIONAL, Requirement.TYPE_PROJECT_RELATED);
             typeBox.getSelectionModel().select(model.getFocusRequirement().getType());
 
-            // Date Picker
-            deadlinePicker.setValue(
-                    LocalDate.of(
-                            model.getFocusRequirement().getDeadline().getYear(),
-                            model.getFocusRequirement().getDeadline().getMonth(),
-                            model.getFocusRequirement().getDeadline().getDay()
-                    ));
+            // Deadline Picker
+            deadlinePicker.setValue(model.getFocusRequirement().getDeadline());
+
+            // Estimate Picker
+            estimatePicker.setValue(model.getFocusRequirement().getEstimate());
+
+            // responsible Team Member
+            responsibleTeamMemberInputField.setText(model.getFocusRequirement().getResponsibleTeamMember().getName());
 
             idField.setText(model.getFocusRequirement().getId());
             hoursWorkedField.setText(Integer.toString(model.getFocusRequirement().getTimeSpent()));
 
             // Open Task List Button
-            openTaskListButton.setDisable(false);
+            openTaskListButton.setVisible(true);
         }
         errorLabel.setText("");
 
-        //formatting the DatePicker from MM/dd/yyyy to dd/MM/yyyy
+        //add Responsible Team Member from Team List
+        TextFields.bindAutoCompletion(responsibleTeamMemberInputField, model.getFocusProject().getTeam().getTeamMemberNameList());
+
+        //formatting the Deadline DatePicker from MM/dd/yyyy to yyyy-MM-dd
         deadlinePicker.getEditor().setText(
-                DateTimeFormatter.ofPattern("dd/MM/yyyy").format(deadlinePicker.getValue())
+                DateTimeFormatter.ofPattern("yyyy-MM-dd").format(deadlinePicker.getValue())
         );
-        deadlinePicker.setOnAction(event -> {
-            deadlinePicker.getEditor().setText(
-                    DateTimeFormatter.ofPattern("dd/MM/yyyy").format(deadlinePicker.getValue())
-            );
-        });
+        deadlinePicker.setOnAction(event -> deadlinePicker.getEditor().setText(
+                DateTimeFormatter.ofPattern("yyyy-MM-dd").format(deadlinePicker.getValue())
+        ));
+        //formatting the Estimate DatePicker from MM/dd/yyyy to yyyy-MM-dd
+        estimatePicker.getEditor().setText(
+                DateTimeFormatter.ofPattern("yyyy-MM-dd").format(estimatePicker.getValue())
+        );
+        estimatePicker.setOnAction(event -> estimatePicker.getEditor().setText(
+                DateTimeFormatter.ofPattern("yyyy-MM-dd").format(estimatePicker.getValue())
+        ));
     }
 
     public Region getRoot() {
@@ -122,20 +142,20 @@ public class RequirementViewController {
     @FXML
     private void submitButtonPressed() {
         try {
-            MyDate deadline = new MyDate(
-                    deadlinePicker.getValue().getDayOfMonth(),
-                    deadlinePicker.getValue().getMonthValue(),
-                    deadlinePicker.getValue().getYear()
-            );
-
             // Add button was pressed
             if (model.isAdding()) {
+                if (titleField.getText().isEmpty()) {
+                    throw new IllegalArgumentException("Please enter the title of requirement first.");
+                }
+
                 model.addRequirement(new Requirement(
                         titleField.getText(),
                         statusBox.getSelectionModel().getSelectedItem(),
                         typeBox.getSelectionModel().getSelectedItem(),
                         descriptionArea.getText(),
-                        deadline
+                        deadlinePicker.getValue(),
+                        estimatePicker.getValue(),
+                        model.getTeamMember(responsibleTeamMemberInputField.getText())
                 ));
             }
             // View button was pressed
@@ -144,15 +164,16 @@ public class RequirementViewController {
                 model.getFocusRequirement().setDescription(descriptionArea.getText());
                 model.getFocusRequirement().setStatus(statusBox.getSelectionModel().getSelectedItem());
                 model.getFocusRequirement().setType(typeBox.getSelectionModel().getSelectedItem());
-                model.getFocusRequirement().setDeadline(deadline);
+                model.getFocusRequirement().setDeadline(deadlinePicker.getValue());
+                model.getFocusRequirement().setEstimate(estimatePicker.getValue());
+                model.getFocusRequirement().setResponsibleTeamMember(model.getTeamMember(responsibleTeamMemberInputField.getText()));
             }
             viewHandler.openView("RequirementListView");
         }
         catch (IllegalArgumentException e) {
-            errorLabel.setText(e.getMessage());
+            errorLabel.setText(e.getMessage() );
         }
     }
-
     @FXML
     private void cancelButtonPressed() {
         viewHandler.openView("RequirementListView");
@@ -164,5 +185,4 @@ public class RequirementViewController {
             submitButtonPressed();
         }
     }
-
 }
