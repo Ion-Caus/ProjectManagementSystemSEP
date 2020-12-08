@@ -12,7 +12,7 @@ import org.controlsfx.control.textfield.TextFields;
 
 import java.util.Optional;
 
-public class CreateTeamViewController {
+public class CreateTeamViewController extends Controller{
     @FXML private TextField teamMembersInputField;
     @FXML private ListView<String> teamMembersListView;
     @FXML private Label errorLabel;

@@ -1,9 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.geometry.*?>
-<?import javafx.scene.control.*?>
-<?import javafx.scene.layout.*?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.Tab?>
+<?import javafx.scene.control.TabPane?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
+
 <VBox prefHeight="400.0" prefWidth="600.0" userData="Project Management System" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="view.ProjectListViewController">
    <children>
       <TabPane prefHeight="407.0" prefWidth="600.0" tabClosingPolicy="UNAVAILABLE">
@@ -49,7 +57,7 @@
                                   <TableColumn fx:id="nameProjectColumn" minWidth="0.0" prefWidth="120.0" text="Name" />
                                     <TableColumn fx:id="statusProjectColumn" minWidth="0.0" prefWidth="105.0" text="Status" />
                                     <TableColumn fx:id="deadlineProjectColumn" prefWidth="100.0" text="Deadline" />
-                                    <TableColumn fx:id="estimateProjectColumn" prefWidth="100.0" text="Estimate" />
+                                    <TableColumn fx:id="estimateProjectColumn" prefWidth="85.0" text="Estimate" />
                                 </columns>
                               </TableView>
                            </children>

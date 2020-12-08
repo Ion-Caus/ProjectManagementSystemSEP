@@ -11,7 +11,7 @@ import org.controlsfx.control.textfield.TextFields;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 
-public class RequirementViewController {
+public class RequirementViewController extends Controller{
     @FXML private TextField titleField;
     @FXML private TextArea descriptionArea;
     @FXML private ComboBox<String> statusBox;

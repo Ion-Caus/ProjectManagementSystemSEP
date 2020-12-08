@@ -8,7 +8,7 @@ import model.Task;
 
 import java.util.Optional;
 
-public class TaskListViewController {
+public class TaskListViewController extends Controller{
     @FXML
     private TableView<TaskViewModel> taskListTable;
     @FXML private TableColumn<TaskViewModel, String> idTaskColumn;

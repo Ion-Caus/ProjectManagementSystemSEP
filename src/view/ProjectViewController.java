@@ -11,7 +11,7 @@ import model.Team;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 
-public class ProjectViewController {
+public class ProjectViewController extends Controller{
     @FXML private TextField nameField;
     @FXML private ComboBox<String> statusBox;
     @FXML private DatePicker deadlinePicker;

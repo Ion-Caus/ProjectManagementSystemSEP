@@ -9,7 +9,7 @@ import model.TeamMember;
 
 import java.util.Optional;
 
-public class ProjectListViewController {
+public class ProjectListViewController extends Controller{
     // projects tab
     @FXML private TableView<ProjectViewModel> projectListTable;
     @FXML private TableColumn<ProjectViewModel, String> idProjectColumn;

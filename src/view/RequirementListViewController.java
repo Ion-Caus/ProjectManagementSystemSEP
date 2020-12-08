@@ -9,7 +9,7 @@ import model.Requirement;
 import java.util.Optional;
 
 
-public class RequirementListViewController {
+public class RequirementListViewController extends Controller{
     @FXML private TableView<RequirementViewModel> requirementListTable;
     @FXML private TableColumn<RequirementViewModel, String> idRequirementColumn;
     @FXML private TableColumn<RequirementViewModel, String> titleRequirementColumn;
