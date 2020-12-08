@@ -4,20 +4,23 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.layout.Region;
 import javafx.stage.Stage;
-
-import model.ProjectListModel;
+import model.PMSModel;
 
 public class ViewHandler {
     private Scene currentScene;
     private Stage primaryStage;
-    private ProjectListModel model;
+    private PMSModel model;
 
     private ProjectListViewController projectListViewController;
     private ProjectViewController projectViewController;
-    private RequirementViewController requirementViewController;
     private RequirementListViewController requirementListViewController;
+    private RequirementViewController requirementViewController;
+    private TaskListViewController taskListViewController;
+    private TaskViewController taskViewController;
 
-    public ViewHandler(ProjectListModel model) {
+    private CreateTeamViewController createTeamViewController;
+
+    public ViewHandler(PMSModel model) {
         this.model = model;
         this.currentScene = new Scene(new Region());
     }
@@ -41,6 +44,15 @@ public class ViewHandler {
                 break;
             case "RequirementView":
                 root = loadRequirementViewGUI("RequirementView.fxml");
+                break;
+            case  "TaskListView":
+                root = loadTaskListViewGUI("TaskListView.fxml");
+                break;
+            case "TaskView":
+                root = loadTaskViewGUI("TaskView.fxml");
+                break;
+            case "CreateTeamView":
+                root = loadCreateTeamViewGUI("CreateTeamView.fxml");
                 break;
         }
         currentScene.setRoot(root);
@@ -135,5 +147,62 @@ public class ViewHandler {
             requirementViewController.reset();
         }
         return requirementViewController.getRoot();
+    }
+
+    public Region loadTaskListViewGUI(String fxmlFile) {
+        if (taskListViewController == null) {
+            try {
+                FXMLLoader loader = new FXMLLoader();
+                loader.setLocation(getClass().getResource(fxmlFile));
+                Region root = loader.load();
+                taskListViewController = loader.getController();
+                taskListViewController.init(this, model, root);
+            }
+            catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+        else {
+            taskListViewController.reset();
+        }
+        return taskListViewController.getRoot();
+    }
+
+    public Region loadTaskViewGUI(String fxmlFile) {
+        if (taskViewController == null) {
+            try {
+                FXMLLoader loader = new FXMLLoader();
+                loader.setLocation(getClass().getResource(fxmlFile));
+                Region root = loader.load();
+                taskViewController = loader.getController();
+                taskViewController.init(this, model, root);
+            }
+            catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+        else {
+            taskViewController.reset();
+        }
+        return taskViewController.getRoot();
+    }
+
+    public Region loadCreateTeamViewGUI(String fxmlFile) {
+        if (createTeamViewController == null) {
+            try {
+                FXMLLoader loader = new FXMLLoader();
+                loader.setLocation(getClass().getResource(fxmlFile));
+                Region root = loader.load();
+                createTeamViewController = loader.getController();
+                createTeamViewController.init(this, model, root);
+            }
+            catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+        else {
+            createTeamViewController.reset();
+        }
+        return createTeamViewController.getRoot();
     }
 }

@@ -4,9 +4,9 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
-<VBox prefHeight="392.0" prefWidth="600.0" userData="Project" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="view.ProjectViewController">
+<VBox prefHeight="405.0" prefWidth="600.0" userData="Task" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="view.TaskViewController">
    <children>
-      <Label prefHeight="17.0" prefWidth="600.0" text="Project">
+      <Label prefHeight="17.0" prefWidth="600.0" text="Task">
          <font>
             <Font size="24.0" />
          </font>
@@ -17,11 +17,11 @@
       <Separator prefWidth="200.0" />
       <HBox prefHeight="303.0" prefWidth="600.0">
          <children>
-            <VBox prefHeight="321.0" prefWidth="370.0" spacing="15.0">
+            <VBox prefHeight="321.0" prefWidth="370.0">
                <children>
                   <HBox alignment="CENTER_LEFT" prefHeight="35.0" prefWidth="370.0" spacing="10.0">
                      <children>
-                        <Label prefWidth="77.0" text="Name">
+                        <Label text="Title">
                            <font>
                               <Font size="18.0" />
                            </font>
@@ -29,21 +29,34 @@
                               <Insets left="10.0" />
                            </padding>
                         </Label>
-                        <TextField fx:id="nameField" onAction="#onEnter">
+                        <TextField fx:id="titleField" onAction="#onEnter">
                            <font>
                               <Font size="14.0" />
                            </font>
                         </TextField>
                      </children>
-                     <VBox.margin>
-                        <Insets top="10.0" />
-                     </VBox.margin>
                   </HBox>
-                  <HBox alignment="CENTER_LEFT" prefHeight="51.0" prefWidth="370.0" spacing="10.0">
+                  <Label text="Description">
+                     <VBox.margin>
+                        <Insets />
+                     </VBox.margin>
+                     <padding>
+                        <Insets left="10.0" top="5.0" />
+                     </padding>
+                     <font>
+                        <Font size="14.0" />
+                     </font>
+                  </Label>
+                  <TextArea fx:id="descriptionArea" prefHeight="83.0" prefWidth="370.0">
+                     <VBox.margin>
+                        <Insets bottom="10.0" left="10.0" right="10.0" top="5.0" />
+                     </VBox.margin>
+                  </TextArea>
+                  <HBox alignment="CENTER_LEFT" prefHeight="51.0" prefWidth="245.0" spacing="10.0">
                      <children>
-                        <Label prefWidth="77.0" text="Status">
+                        <Label text="Status">
                            <font>
-                              <Font size="18.0" />
+                              <Font size="14.0" />
                            </font>
                            <padding>
                               <Insets left="10.0" />
@@ -52,61 +65,48 @@
                         <ComboBox fx:id="statusBox" prefHeight="27.0" prefWidth="145.0" promptText="Unassigned" />
                      </children>
                   </HBox>
-                  <HBox alignment="CENTER_LEFT" prefHeight="49.0" prefWidth="370.0" spacing="10.0">
+                  <HBox alignment="CENTER_LEFT" prefHeight="37.0" prefWidth="367.0" spacing="10.0">
                      <children>
-                        <Label prefWidth="77.0" text="Deadline">
+                        <Label text="Deadline">
                            <font>
-                              <Font size="18.0" />
+                              <Font size="14.0" />
                            </font>
                            <padding>
                               <Insets left="10.0" />
                            </padding>
                         </Label>
-                        <DatePicker fx:id="deadlinePicker" editable="false" prefHeight="27.0" prefWidth="152.0" />
+                        <DatePicker fx:id="deadlinePicker" />
                      </children>
                   </HBox>
-                  <HBox alignment="CENTER_LEFT" prefHeight="49.0" prefWidth="370.0" spacing="10.0">
+                  <HBox alignment="CENTER_LEFT" prefHeight="35.0" prefWidth="367.0" spacing="10.0">
                      <children>
-                        <Label prefWidth="77.0" text="Estimate">
+                        <Label text="Estimate">
                            <font>
-                              <Font size="18.0" />
+                              <Font size="14.0" />
                            </font>
                            <padding>
                               <Insets left="10.0" />
                            </padding>
                         </Label>
-                        <DatePicker fx:id="estimatePicker" editable="false" prefHeight="27.0" prefWidth="152.0" />
+                        <DatePicker fx:id="estimatePicker" />
                      </children>
                   </HBox>
-                  <VBox alignment="TOP_CENTER" prefHeight="200.0" prefWidth="100.0" spacing="15.0">
+                  <HBox alignment="CENTER_LEFT" prefHeight="40.0" prefWidth="415.0" spacing="10.0">
                      <children>
-                        <Separator prefWidth="200.0" />
-                        <HBox alignment="CENTER_LEFT" prefHeight="40.0" prefWidth="357.0" spacing="10.0">
-                           <children>
-                              <Label prefWidth="77.0" text="Team">
-                                 <font>
-                                    <Font size="18.0" />
-                                 </font>
-                                 <padding>
-                                    <Insets left="5.0" />
-                                 </padding>
-                              </Label>
-                              <Button fx:id="addTeamMemberButton" mnemonicParsing="false" onAction="#addTeamMemberButton" prefWidth="80.0" text="Add" />
-                           </children>
-                           <VBox.margin>
-                              <Insets />
-                           </VBox.margin>
-                        </HBox>
-                        <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0">
-                           <VBox.margin>
-                              <Insets top="5.0" />
-                           </VBox.margin>
-                        </HBox>
+                        <Label text="Responsible member">
+                           <font>
+                              <Font size="14.0" />
+                           </font>
+                           <padding>
+                              <Insets left="10.0" />
+                           </padding>
+                        </Label>
+                        <TextField fx:id="responsibleTeamMemberInputField" />
                      </children>
-                     <padding>
-                        <Insets left="10.0" />
-                     </padding>
-                  </VBox>
+                     <VBox.margin>
+                        <Insets top="5.0" />
+                     </VBox.margin>
+                  </HBox>
                </children>
             </VBox>
             <Separator orientation="VERTICAL" prefHeight="200.0" />
@@ -151,14 +151,6 @@
                   </HBox>
                   <VBox alignment="BOTTOM_CENTER" prefHeight="235.0" prefWidth="227.0" spacing="20.0">
                      <children>
-                        <Button fx:id="openReqListButton" mnemonicParsing="false" onAction="#openRequirementList" prefWidth="150.0" text="Req List">
-                           <VBox.margin>
-                              <Insets bottom="20.0" />
-                           </VBox.margin>
-                           <font>
-                              <Font size="18.0" />
-                           </font>
-                        </Button>
                         <Button mnemonicParsing="false" onAction="#submitButtonPressed" prefWidth="80.0" text="Submit">
                            <font>
                               <Font size="18.0" />
@@ -178,7 +170,10 @@
             </VBox>
          </children>
       </HBox>
-      <Separator prefWidth="200.0" />
+      <Separator prefWidth="200.0">
+         <VBox.margin>
+            <Insets top="20.0" />
+         </VBox.margin></Separator>
       <Label fx:id="errorLabel" alignment="CENTER" prefHeight="17.0" prefWidth="600.0" text="errorLabel" textFill="#dd1212">
          <VBox.margin>
             <Insets />

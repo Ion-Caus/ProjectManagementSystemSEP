@@ -3,53 +3,130 @@ package view;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.layout.Region;
+import model.PMSModel;
+import model.Requirement;
 
-import model.Project;
-import model.ProjectListModel;
+import java.util.Optional;
 
 
 public class RequirementListViewController {
-    @FXML private ComboBox<String> idsList;
+    @FXML private TableView<RequirementViewModel> requirementListTable;
+    @FXML private TableColumn<RequirementViewModel, String> idRequirementColumn;
+    @FXML private TableColumn<RequirementViewModel, String> titleRequirementColumn;
+    @FXML private TableColumn<RequirementViewModel, String> statusRequirementColumn;
+    @FXML private TableColumn<RequirementViewModel, String> typeRequirementColumn;
+    @FXML private TableColumn<RequirementViewModel, String> deadlineRequirementColumn;
+    @FXML private TableColumn<RequirementViewModel, String> estimateRequirementColumn;
+    @FXML private TableColumn<RequirementViewModel, String> responsibleTeamMemberReqColumn;
+    @FXML private Label errorLabel;
 
     private ViewHandler viewHandler;
-    private ProjectListModel model;
+    private PMSModel model;
     private Region root;
+    private RequirementListViewModel viewModel;
 
     public RequirementListViewController() {
         // called by FXMLLoader
     }
 
-    public void init(ViewHandler viewHandler, ProjectListModel model, Region root) {
+    public void init(ViewHandler viewHandler, PMSModel model, Region root) {
         this.viewHandler = viewHandler;
         this.model = model;
         this.root = root;
-        reset();
+
+        this.viewModel = new RequirementListViewModel(model);
+
+        idRequirementColumn.setCellValueFactory(cellDate -> cellDate.getValue().getIdProperty());
+        titleRequirementColumn.setCellValueFactory(cellData -> cellData.getValue().getTitleProperty());
+        statusRequirementColumn.setCellValueFactory(cellData -> cellData.getValue().getStatusProperty());
+        typeRequirementColumn.setCellValueFactory(cellData -> cellData.getValue().getTypeProperty());
+        deadlineRequirementColumn.setCellValueFactory(cellData -> cellData.getValue().getDeadlineProperty());
+        estimateRequirementColumn.setCellValueFactory(cellData -> cellData.getValue().getEstimateProperty());
+        responsibleTeamMemberReqColumn.setCellValueFactory(cellData -> cellData.getValue().getResponsibleTeamMemberProperty());
+        requirementListTable.setItems(viewModel.getRequirementList());
+
+        errorLabel.setText("");
     }
 
     public void reset() {
-        idsList.getItems().removeAll(idsList.getItems());
-        for (Project project: model.getProjectList()) {
-            idsList.getItems().add(project.getId());
-        }
-        idsList.getSelectionModel().selectFirst();
+        errorLabel.setText("");
+        viewModel.update();
     }
 
     public Region getRoot() {
         return root;
     }
+
+    @FXML
+    private void openTaskList(){
+        try {
+            RequirementViewModel selectItem = requirementListTable.getSelectionModel().getSelectedItem();
+
+            //Setting the focusRequirement by getting the requirement by its ID
+            model.setFocusRequirement(model.getRequirement(selectItem.getIdProperty().get()));
+            model.setAdding(false);
+            viewHandler.openView("TaskListView");
+        }
+        catch (Exception e) {
+            errorLabel.setText("Please select an item");
+        }
+    }
     
     @FXML
-    private void addButtonPressed() {
+    private void addRequirementButton() {
+        model.setAdding(true);
         viewHandler.openView("RequirementView");
     }
 
     @FXML
-    private void viewButtonPressed() {
-        viewHandler.openView("RequirementView");
+    private void viewRequirementButton() {
+        try {
+            RequirementViewModel selectItem = requirementListTable.getSelectionModel().getSelectedItem();
+
+            //Setting the focusRequirement by getting the requirement by its ID
+            model.setFocusRequirement(model.getRequirement(selectItem.getIdProperty().get()));
+            model.setAdding(false);
+            viewHandler.openView("RequirementView");
+        }
+        catch (Exception e) {
+            errorLabel.setText("Please select an item");
+        }
+    }
+
+    @FXML
+    private void removeRequirementButton() {
+        try {
+            RequirementViewModel selectItem = requirementListTable.getSelectionModel().getSelectedItem();
+
+            if (confirmation()) {
+                Requirement requirement = model.getRequirement(selectItem.getIdProperty().get());
+                model.removeRequirement(requirement);
+                viewModel.removeRequirement(requirement);
+                requirementListTable.getSelectionModel().clearSelection();
+            }
+        } catch (Exception e) {
+            errorLabel.setText("Please select an item");
+        }
+    }
+
+    public boolean confirmation() {
+        RequirementViewModel selectedItem = requirementListTable.getSelectionModel().getSelectedItem();
+
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+        alert.setTitle("Confirmation");
+        alert.setHeaderText(
+                "Removing the requirement \"" +
+                        selectedItem.getTitleProperty().get() + "\"\n" +
+                        "with the id: " + selectedItem.getIdProperty().get()
+        );
+
+        Optional<ButtonType> result = alert.showAndWait();
+        return result.isPresent() && result.get() == ButtonType.OK;
     }
 
     @FXML
     private void backButtonPressed() {
+        model.setAdding(false);
         viewHandler.openView("ProjectListView");
     }
 

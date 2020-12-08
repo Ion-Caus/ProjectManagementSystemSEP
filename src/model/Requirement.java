@@ -1,5 +1,6 @@
 package model;
 
+import java.time.LocalDate;
 import java.util.Arrays;
 import java.util.Random;
 
@@ -9,12 +10,14 @@ public class Requirement {
     private String status;
     private String type;
     private String description;
-    private MyDate deadline;
-    private MyDate estimate;
+    private LocalDate deadline;
+    private LocalDate estimate;
     private int timeSpent;
-    //TODO private Team team;
 
-    public static final String STATUS_UNASSIGNED = "Unassigned";
+    private TaskList taskList;
+    private TeamMember responsibleTeamMember;
+
+    public static final String STATUS_NOT_STARTED = "Not Started";
     public static final String STATUS_IN_PROCESS = "In Process";
     public static final String STATUS_WAITING_FOR_APPROVAL = "Waiting For Approval";
     public static final String STATUS_APPROVED = "Approved";
@@ -24,10 +27,8 @@ public class Requirement {
     public static final String TYPE_NON_FUNCTIONAL = "Non-functional";
     public static final String TYPE_PROJECT_RELATED = "Project Related";
 
-    // TODO use .copy to MyDate class
 
-    //TODO implement MyDate estimate
-    public Requirement(String title, String status, String type, String description, MyDate deadline) {//, MyDate estimate) {
+    public Requirement(String title, String status, String type, String description, LocalDate deadline, LocalDate estimate, TeamMember responsibleTeamMember) {
         this.id = createReqID();
 
         setTitle(title);
@@ -35,9 +36,11 @@ public class Requirement {
         setType(type);
         setDescription(description);
         setDeadline(deadline);
-        //setEstimate(estimate);
+        setEstimate(estimate);
+        setResponsibleTeamMember(responsibleTeamMember);
         this.timeSpent = 0;
 
+        this.taskList = new TaskList();
     }
 
     public String getId() {
@@ -85,26 +88,41 @@ public class Requirement {
         this.description = (description == null) ? "" : description;
     }
 
-    public MyDate getDeadline() {
-        return deadline.copy();
+    public TaskList getTaskList() {
+        return taskList;
     }
 
-    public void setDeadline(MyDate deadline) {
+    public LocalDate getDeadline() {
+        return deadline;
+    }
+
+    public void setDeadline(LocalDate deadline) {
         if (deadline == null) {
             throw new IllegalArgumentException("Null deadline given");
         }
-        this.deadline = deadline.copy();
+        this.deadline = deadline;
     }
 
-    public MyDate getEstimate() {
-        return estimate.copy();
+    public LocalDate getEstimate() {
+        return estimate;
     }
 
-    public void setEstimate(MyDate estimate) {
+    public void setEstimate(LocalDate estimate) {
         if (estimate == null) {
             throw new IllegalArgumentException("Null estimate given");
         }
-        this.estimate = estimate.copy();
+        this.estimate = estimate;
+    }
+
+    public TeamMember getResponsibleTeamMember() {
+        return responsibleTeamMember;
+    }
+
+    public void setResponsibleTeamMember(TeamMember responsibleTeamMember) {
+        if (responsibleTeamMember == null) {
+            throw new IllegalArgumentException("Null responsible team member given");
+        }
+        this.responsibleTeamMember = responsibleTeamMember;
     }
 
     public int getTimeSpent() {
@@ -121,7 +139,7 @@ public class Requirement {
     }
 
     private static boolean validStatus(String status) {
-        String[] statuses = {STATUS_UNASSIGNED, STATUS_IN_PROCESS, STATUS_WAITING_FOR_APPROVAL, STATUS_APPROVED, STATUS_REJECTED};
+        String[] statuses = {STATUS_NOT_STARTED, STATUS_IN_PROCESS, STATUS_WAITING_FOR_APPROVAL, STATUS_APPROVED, STATUS_REJECTED};
         return Arrays.asList(statuses).contains(status);
     }
 
@@ -138,9 +156,11 @@ public class Requirement {
                 ", status='" + status + '\'' +
                 ", type='" + type + '\'' +
                 ", description='" + description + '\'' +
-                ", deadline=" + deadline +
-                ", estimate=" + estimate +
+                ", deadline=" + deadline.toString() +
+                ", estimate=" + estimate.toString() +
+                ", responsibleTeamMember=" + responsibleTeamMember.getName() +
                 ", timeSpent=" + timeSpent +
+                ", taskList=" + taskList +
                 '}';
     }
 }

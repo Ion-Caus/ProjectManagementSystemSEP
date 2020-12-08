@@ -1,12 +1,11 @@
 package view;
 
 import javafx.fxml.FXML;
-
 import javafx.scene.control.*;
 import javafx.scene.layout.Region;
-
+import model.PMSModel;
 import model.Project;
-import model.ProjectListModel;
+import model.TeamMember;
 
 import java.util.Optional;
 
@@ -17,45 +16,68 @@ public class ProjectListViewController {
     @FXML private TableColumn<ProjectViewModel, String> nameProjectColumn;
     @FXML private TableColumn<ProjectViewModel, String> statusProjectColumn;
     @FXML private TableColumn<ProjectViewModel, String> deadlineProjectColumn;
-    @FXML private Label errorLabel;
+    @FXML private TableColumn<ProjectViewModel, String> estimateProjectColumn;
+    @FXML private Label errorLabelProject;
 
     //employees tab
-    //@FXML private TableView<
+    @FXML private TableView<TeamMemberViewModel> employeeListTable;
+    @FXML private TableColumn<TeamMemberViewModel, String> nameEmployeeColumn;
+    @FXML private Label errorLabelEmployee;
 
     private ViewHandler viewHandler;
-    private ProjectListModel model;
+    private PMSModel model;
     private Region root;
-    private ProjectListViewModel viewModel;
+
+    private ProjectListViewModel viewModelProject;
+    private EmployeesViewModel viewModelEmployee;
 
     public ProjectListViewController() {
         // called by FXMLLoader
     }
 
-    public void init(ViewHandler viewHandler, ProjectListModel model, Region root) {
+    public void init(ViewHandler viewHandler, PMSModel model, Region root) {
         this.viewHandler = viewHandler;
         this.model = model;
         this.root = root;
 
-        this.viewModel = new ProjectListViewModel(model);
+        this.viewModelProject = new ProjectListViewModel(model);
+        this.viewModelEmployee = new EmployeesViewModel(model);
 
+        //---- Project List ----
         idProjectColumn.setCellValueFactory(cellData -> cellData.getValue().getIdProperty());
         nameProjectColumn.setCellValueFactory(cellDate -> cellDate.getValue().getNameProperty());
         statusProjectColumn.setCellValueFactory(cellDate -> cellDate.getValue().getStatusProperty());
         deadlineProjectColumn.setCellValueFactory(cellDate -> cellDate.getValue().getDeadlineProperty());
+        estimateProjectColumn.setCellValueFactory(cellDate -> cellDate.getValue().getEstimateProperty());
 
-        projectListTable.setItems(viewModel.getProjectList());
+        projectListTable.setItems(viewModelProject.getProjectList());
 
-        errorLabel.setText("");
+        errorLabelProject.setText("");
+        //---------------------
+
+
+        //---- Employee List ----
+        nameEmployeeColumn.setCellValueFactory(cellData -> cellData.getValue().getNameProperty());
+
+        employeeListTable.setItems(viewModelEmployee.getEmployeeList());
+
+        errorLabelEmployee.setText("");
+        //-----------------------
     }
 
     public void reset() {
-        viewModel.update();
+        errorLabelProject.setText("");
+        viewModelProject.update();
+
+        errorLabelEmployee.setText("");
+        viewModelEmployee.update();
     }
 
     public Region getRoot() {
         return root;
     }
 
+    //---------- ProjectList Methods ----------
     @FXML
     private void createProjectButton() {
         model.setAdding(true);
@@ -67,13 +89,13 @@ public class ProjectListViewController {
         try {
             ProjectViewModel selectItem = projectListTable.getSelectionModel().getSelectedItem();
 
-            //Setting the focusProject by getting the project its by ID
+            //Setting the focusProject by getting the project by its ID
             model.setFocusProject(model.getProject(selectItem.getIdProperty().get()));
             model.setAdding(false);
             viewHandler.openView("ProjectView");
         }
         catch (Exception e) {
-            errorLabel.setText(e.getMessage());
+            errorLabelProject.setText("Please select an item");
         }
     }
 
@@ -82,40 +104,90 @@ public class ProjectListViewController {
         try {
             ProjectViewModel selectItem = projectListTable.getSelectionModel().getSelectedItem();
 
-            if (confirmation()) {
+            if (confirmationProject()) {
                 Project project = model.getProject(selectItem.getIdProperty().get());
                 model.removeProject(project);
-                viewModel.removeProject(project);
+                viewModelProject.removeProject(project);
                 projectListTable.getSelectionModel().clearSelection();
             }
-        } catch (Exception e) {
-            errorLabel.setText("Item not found: " + e.getMessage());
+        }
+        catch (Exception e) {
+            errorLabelProject.setText("Please select an item");
         }
     }
 
-    public boolean confirmation() {
+    private boolean confirmationProject() {
         ProjectViewModel selectedItem = projectListTable.getSelectionModel().getSelectedItem();
 
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
         alert.setTitle("Confirmation");
         alert.setHeaderText(
-                "Removing project { " +
-                        selectedItem.getNameProperty().get() + ": " +
-                        selectedItem.getIdProperty().get() + " }");
+                "Removing the project \"" +
+                        selectedItem.getNameProperty().get() + "\"\n" +
+                        "with the id: " + selectedItem.getIdProperty().get()
+        );
 
         Optional<ButtonType> result = alert.showAndWait();
         return result.isPresent() && result.get() == ButtonType.OK;
     }
 
-    // TODO add methods for employeeList
+    @FXML
+    private void openRequirementList(){
+        try {
+            ProjectViewModel selectItem = projectListTable.getSelectionModel().getSelectedItem();
 
+            //Setting the focusProject by getting the project by its ID
+            model.setFocusProject(model.getProject(selectItem.getIdProperty().get()));
+            model.setAdding(false);
+            viewHandler.openView("RequirementListView");
+        }
+        catch (Exception e) {
+            errorLabelEmployee.setText("Please select an item");
+        }
+    }
+
+
+    //---------- EmployeeList Methods ----------
     @FXML
     private void addMemberButton() {
+        errorLabelEmployee.setText("");
 
+        TextInputDialog dialog = new TextInputDialog();
+        dialog.setTitle("Employee");
+        dialog.setHeaderText("What is the name of employee");
+
+        Optional<String> result = dialog.showAndWait();
+
+        if (result.isPresent()) {
+            model.addEmployee(new TeamMember(result.get()));
+            viewModelEmployee.update();
+        }
     }
 
     @FXML
     private void removeMemberButton() {
+        try {
+            TeamMemberViewModel selectItem = employeeListTable.getSelectionModel().getSelectedItem();
 
+            if (confirmationEmployee()) {
+                TeamMember employee = model.getEmployee(selectItem.getNameProperty().get());
+                model.removeEmployee(employee);
+                viewModelEmployee.removeEmployee(employee);
+                employeeListTable.getSelectionModel().clearSelection();
+            }
+        }
+        catch (Exception e) {
+            errorLabelEmployee.setText("Please select an item");
+        }
+    }
+    private boolean confirmationEmployee() {
+        TeamMemberViewModel selectedItem = employeeListTable.getSelectionModel().getSelectedItem();
+
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+        alert.setTitle("Confirmation");
+        alert.setHeaderText("Removing the employee \"" + selectedItem.getNameProperty().get() + "\"");
+
+        Optional<ButtonType> result = alert.showAndWait();
+        return result.isPresent() && result.get() == ButtonType.OK;
     }
 }
