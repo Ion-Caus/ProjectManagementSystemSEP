@@ -1,8 +1,5 @@
 package model;
 
-import parser.ParserException;
-
-import java.io.IOException;
 import java.util.ArrayList;
 
 public class PMSModelManager implements PMSModel {
@@ -12,7 +9,6 @@ public class PMSModelManager implements PMSModel {
     private Project focusProject;
     private Requirement focusRequirement;
     private Task focusTask;
-    private SaverClass saver;
 
     private boolean adding;
 
@@ -20,8 +16,6 @@ public class PMSModelManager implements PMSModel {
         this.projectList = new ProjectList();
         this.employeeList = new Team();
         this.adding = false;
-        this.saver = new SaverClass();
-        readFromFile();
     }
 
     //-------for adding or viewing---------
@@ -225,17 +219,5 @@ public class PMSModelManager implements PMSModel {
     @Override
     public Task getFocusTask() {
         return focusTask;
-    }
-    ///FILE HANDLING
-
-    public void readFromFile()
-    {
-        this.employeeList = saver.getTeamFromBinary();
-        this.projectList = saver.getProjectListFromBinary();
-    }
-
-    @Override public void saveIntoFile(){
-        saver.write(employeeList);
-        saver.write(projectList);
     }
 }

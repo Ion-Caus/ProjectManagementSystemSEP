@@ -1,9 +1,6 @@
 package model;
 
-import java.io.Serializable;
-
-public class TeamMember implements Serializable
-{
+public class TeamMember {
     private String name;
 
     //TODO divide name to firstName and lastName

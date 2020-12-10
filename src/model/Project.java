@@ -1,12 +1,10 @@
 package model;
 
-import java.io.Serializable;
 import java.time.LocalDate;
 import java.util.Arrays;
 import java.util.Random;
 
-public class Project implements Serializable
-{
+public class Project {
     private String id;
     private String name;
     private String status;
