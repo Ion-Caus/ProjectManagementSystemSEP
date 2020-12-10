@@ -1,9 +1,11 @@
 package model;
 
+import java.io.Serializable;
 import java.time.LocalDate;
 import java.util.ArrayList;
 
-public class ProjectList {
+public class ProjectList implements Serializable
+{
     private ArrayList<Project> projects;
 
     public ProjectList() {
@@ -56,5 +58,8 @@ public class ProjectList {
         return this.projects;
     }
 
-
+    @Override public String toString()
+    {
+        return "ProjectList{" + "projects=" + projects + '}';
+    }
 }

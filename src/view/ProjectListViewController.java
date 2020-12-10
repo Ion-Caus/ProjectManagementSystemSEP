@@ -60,7 +60,8 @@ public class ProjectListViewController extends Controller{
         nameEmployeeColumn.setCellValueFactory(cellData -> cellData.getValue().getNameProperty());
 
         employeeListTable.setItems(viewModelEmployee.getEmployeeList());
-
+        viewModelProject.update();
+        viewModelEmployee.update();
         errorLabelEmployee.setText("");
         //-----------------------
     }
