@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<ProjectList>
+  <projects>
+    <timeSpent>0</timeSpent>
+    <name>1</name>
+    <estimate>
+      <month>12</month>
+      <year>2020</year>
+      <day>17</day>
+    </estimate>
+    <id>P73160</id>
+    <team/>
+    <deadline>
+      <month>12</month>
+      <year>2020</year>
+      <day>24</day>
+    </deadline>
+    <requirementList/>
+    <status>Created</status>
+  </projects>
+  <projects>
+    <timeSpent>0</timeSpent>
+    <name>2</name>
+    <estimate>
+      <month>12</month>
+      <year>2020</year>
+      <day>17</day>
+    </estimate>
+    <id>P17224</id>
+    <team/>
+    <deadline>
+      <month>12</month>
+      <year>2020</year>
+      <day>24</day>
+    </deadline>
+    <requirementList/>
+    <status>Created</status>
+  </projects>
+</ProjectList>

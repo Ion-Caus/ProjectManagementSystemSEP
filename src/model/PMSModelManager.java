@@ -2,6 +2,7 @@ package model;
 
 import parser.ParserException;
 
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
 
@@ -230,8 +231,12 @@ public class PMSModelManager implements PMSModel {
 
     public void readFromFile()
     {
+        try{
         this.employeeList = saver.getTeamFromBinary();
-        this.projectList = saver.getProjectListFromBinary();
+        this.projectList = saver.getProjectListFromBinary();}
+        catch (Exception e){
+            e.printStackTrace();
+        }
     }
 
     @Override public void saveIntoFile(){
