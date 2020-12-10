@@ -19,6 +19,10 @@ public class Time {
         this.minute=minute;
     }
 
+    public void addTime(int minute){
+        this.minute+=minute;
+    }
+
     public void incrementTime(int minute){
         this.minute+=minute;
     }
