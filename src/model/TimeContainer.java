@@ -12,19 +12,33 @@ public class TimeContainer {
 
 
     public double getTimeWorked(TeamMember teamMember){
-           return timeContainer.get(timeContainer.indexOf(this)).getTimeWorked();
+           for(Time time:timeContainer){
+               if (time.getTeamMember().equals(teamMember)){
+                   return time.getMinute();
+               }
 
-
+           }
+           return 0;
     }
 
     public double getTimeWorked(){
         int minutes=0;
         for (Time time : timeContainer) {
-            minutes += time.getTimeWorked();
+            minutes += time.getMinute();
 
         }
         return minutes;
     }
+
+    public void setTimeWorked(TeamMember teamMember, int minutes){
+        for (Time time : timeContainer) {
+            if (time.getTeamMember().equals(teamMember)) {
+                time.setTime(minutes);
+            }
+        }
+    }
+
+
 
 
 }

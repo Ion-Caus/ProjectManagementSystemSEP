@@ -1,5 +1,6 @@
 package model;
 
+import java.sql.Time;
 import java.util.Arrays;
 import java.util.Random;
 
@@ -130,8 +131,8 @@ public class Task {
     }
 
 
-    public void addTimeSpent(TeamMember teamMember) {
-
+    public void addTimeSpent(TeamMember teamMember, int minutes) {
+        timeContainer.setTimeWorked(teamMember, minutes);
     }
 
     public double getTimeSpent(TeamMember teamMember){

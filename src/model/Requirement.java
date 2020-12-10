@@ -131,8 +131,8 @@ public class Requirement {
             }*/
     // TODO: discuss wit Ion, the double value for that is supposed to be here will fuck some things up in the gui
 
-    public void setTimeSpent(int minutes, int hours) {
-        this.time.setTime(minutes, hours);
+    public void setTimeSpent(int minutes) {
+        this.time.setTime(minutes);
     }
 
     private static String createReqID() {

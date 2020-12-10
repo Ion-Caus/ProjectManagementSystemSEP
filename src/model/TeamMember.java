@@ -50,8 +50,8 @@ public class TeamMember {
         task.setTimeSpent(timeSpent);
     }*/
 
-    public void  addTimeSpentOnRequirement(Requirement requirement, int minutes, int hours){
-        requirement.setTimeSpent(minutes, hours);
+    public void  addTimeSpentOnRequirement(Requirement requirement, int minutes){
+        requirement.setTimeSpent(minutes);
     }
 
 
