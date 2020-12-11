@@ -1,17 +1,19 @@
 package model;
 
+import java.io.Serializable;
 import java.time.LocalDate;
 import java.util.Arrays;
 import java.util.Random;
 
-public class Task {
+public class Task implements Serializable {
     private String id;
     private String title;
     private String status;
     private String description;
     private LocalDate deadline;
     private LocalDate estimate;
-    private int timeSpent;
+
+    private TimeContainer timeWorkedList;
 
     private TeamMember responsibleTeamMember;
 
@@ -29,8 +31,7 @@ public class Task {
         setEstimate(estimate);
         setResponsibleTeamMember(responsibleTeamMember);
 
-        this.timeSpent = 0;
-
+        this.timeWorkedList = new TimeContainer();
     }
 
     public String getId() {
@@ -93,19 +94,15 @@ public class Task {
         return responsibleTeamMember;
     }
 
+    public TimeContainer getTimeWorkedList() {
+        return timeWorkedList;
+    }
+
     public void setResponsibleTeamMember(TeamMember responsibleTeamMember) {
         if (responsibleTeamMember == null) {
             throw new IllegalArgumentException("Null responsible team member given");
         }
         this.responsibleTeamMember = responsibleTeamMember;
-    }
-
-    public int getTimeSpent() {
-        return timeSpent;
-    }
-
-    public void setTimeSpent(int timeSpent) {
-        this.timeSpent = timeSpent;
     }
 
     private static String createTaskID() {
@@ -128,7 +125,7 @@ public class Task {
                 ", deadline=" + deadline.toString() +
                 ", estimate=" + estimate.toString() +
                 ", responsibleTeamMember=" + responsibleTeamMember.getName() +
-                ", timeSpent=" + timeSpent +
+                ", timeWorkedList= " +timeWorkedList +
                 '}';
     }
 }

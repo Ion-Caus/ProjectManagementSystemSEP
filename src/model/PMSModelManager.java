@@ -1,5 +1,6 @@
 package model;
 
+import java.io.IOException;
 import java.util.ArrayList;
 
 public class PMSModelManager implements PMSModel {
@@ -16,6 +17,9 @@ public class PMSModelManager implements PMSModel {
         this.projectList = new ProjectList();
         this.employeeList = new Team();
         this.adding = false;
+
+        //loading data
+        loadData();
     }
 
     //-------for adding or viewing---------
@@ -47,25 +51,6 @@ public class PMSModelManager implements PMSModel {
     }
 
     @Override
-    public TeamMember getTeamMember(String name) {
-        if (name == null || name.isEmpty()) {
-            throw new IllegalArgumentException("Please enter the team member's name");
-        }
-
-        try {
-            return focusProject.getTeam().getTeamMember(name);
-        }
-        catch (IllegalArgumentException e) {
-            throw new IllegalArgumentException("No team member with the name \"" + name + "\" in project's team.");
-        }
-    }
-
-    @Override
-    public TeamMember getTeamMember(int index) {
-        return focusProject.getTeam().getTeamMember(index);
-    }
-
-    @Override
     public TeamMember getEmployee(String name) {
         if (name == null || name.isEmpty()) {
             throw new IllegalArgumentException("Please enter the employee's name");
@@ -92,6 +77,30 @@ public class PMSModelManager implements PMSModel {
     @Override
     public ArrayList<String> getEmployeeNameList() {
         return employeeList.getTeamMemberNameList();
+    }
+
+    @Override
+    public TeamMember getTeamMember(String name) {
+        if (name == null || name.isEmpty()) {
+            throw new IllegalArgumentException("Please enter the team member's name");
+        }
+
+        try {
+            return focusProject.getTeam().getTeamMember(name);
+        }
+        catch (IllegalArgumentException e) {
+            throw new IllegalArgumentException("No team member with the name \"" + name + "\" in project's team.");
+        }
+    }
+
+    @Override
+    public TeamMember getTeamMember(int index) {
+        return focusProject.getTeam().getTeamMember(index);
+    }
+
+    @Override
+    public ArrayList<String> getTeamMemberNameList() {
+        return focusProject.getTeam().getTeamMemberNameList();
     }
 
 
@@ -219,5 +228,29 @@ public class PMSModelManager implements PMSModel {
     @Override
     public Task getFocusTask() {
         return focusTask;
+    }
+
+
+    //-------FileSaver-------
+    @Override
+    public void saveData() {
+        try {
+            FileSaver.toBinary("EmployeeList", this.employeeList);
+            FileSaver.toBinary("ProjectList", this.projectList);
+        }
+        catch (IOException e) {
+            System.out.println("Data cannot be saved.");
+        }
+    }
+
+    @Override
+    public void loadData() {
+        try {
+            this.employeeList = FileSaver.fromBinaryEmployeeList("EmployeeList");
+            this.projectList = FileSaver.fromBinaryProjectList("ProjectList");
+        }
+        catch (IOException | ClassNotFoundException e) {
+            System.out.println("Data cannot be load.\n" + e.getMessage());
+        }
     }
 }

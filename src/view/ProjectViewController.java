@@ -84,7 +84,11 @@ public class ProjectViewController {
             // Estimate Picker
             estimatePicker.setValue(model.getFocusProject().getEstimate());
 
+            // show id
             idField.setText(model.getFocusProject().getId());
+
+            // update and show time spent
+            model.getFocusProject().updateTimeSpent();
             hoursWorkedField.setText(Integer.toString(model.getFocusProject().getTimeSpent()));
 
             // Open Requirement List Button
@@ -120,6 +124,9 @@ public class ProjectViewController {
     private void createProject() {
         // Add button was pressed
         if (model.isAdding()) {
+            if (nameField.getText().isEmpty()) {
+                    throw new IllegalArgumentException("Please enter the title of requirement first.");
+            }
             model.addProject(
                     new Project(
                             nameField.getText(),
@@ -170,14 +177,16 @@ public class ProjectViewController {
     @FXML
     private void addTeamMemberButton() {
         try {
-            createProject();
-            // setting the last created project to focus
-            model.setFocusProject(model.getProjectList().get(model.projectListSize()-1));
-            model.setAdding(false);
+            // set the focus to the last one (just created)
+            if (model.isAdding()) {
+                createProject();
+                model.setFocusProject(model.getProjectList().get(model.projectListSize() - 1));
+                model.setAdding(false);
+            }
             viewHandler.openView("CreateTeamView");
         }
         catch (Exception e) {
-            errorLabel.setText("Please enter the name of project first");
+            errorLabel.setText(e.getMessage());
         }
     }
 }

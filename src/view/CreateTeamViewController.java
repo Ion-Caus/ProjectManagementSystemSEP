@@ -1,7 +1,5 @@
 package view;
 
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
@@ -14,14 +12,17 @@ import java.util.Optional;
 
 public class CreateTeamViewController {
     @FXML private TextField teamMembersInputField;
-    @FXML private ListView<String> teamMembersListView;
+    @FXML private ComboBox<String> roleComboBox;
+    @FXML private TableView<TeamMemberViewModel> teamMembersTable;
+    @FXML private TableColumn<TeamMemberViewModel, String> nameColumn;
+    @FXML private TableColumn<TeamMemberViewModel, String> roleColumn;
     @FXML private Label errorLabel;
 
     private ViewHandler viewHandler;
     private PMSModel model;
     private Region root;
 
-    private ObservableList<String> teamMemberNames;
+    private TeamViewModel viewModel;
 
     public CreateTeamViewController() {
         // called by FXMLLoader
@@ -32,7 +33,13 @@ public class CreateTeamViewController {
         this.model = model;
         this.root = root;
 
-        this.teamMemberNames = FXCollections.observableArrayList();
+        this.viewModel = new TeamViewModel(model);
+
+        // --- Team List Table ---
+        nameColumn.setCellValueFactory(cellData -> cellData.getValue().getNameProperty());
+        roleColumn.setCellValueFactory(cellData -> cellData.getValue().getRoleProperty());
+        teamMembersTable.setItems(viewModel.getTeamList());
+
         reset();
     }
 
@@ -42,10 +49,13 @@ public class CreateTeamViewController {
         teamMembersInputField.setText("");
         TextFields.bindAutoCompletion(teamMembersInputField, model.getEmployeeNameList());
 
-        // adding the teamMembers' name in the ListView
-        teamMemberNames.clear();
-        teamMemberNames.addAll(model.getFocusProject().getTeam().getTeamMemberNameList());
-        teamMembersListView.setItems(teamMemberNames);
+        // Role Combo Box
+        roleComboBox.getItems().removeAll(roleComboBox.getItems());
+        roleComboBox.getItems().addAll(TeamMember.TEAM_MEMBER, TeamMember.PRODUCT_OWNER, TeamMember.SCRUM_MASTER);
+        roleComboBox.getSelectionModel().select(TeamMember.TEAM_MEMBER);
+
+        // update the Team List
+        viewModel.update();
     }
 
     public Region getRoot() {
@@ -55,7 +65,14 @@ public class CreateTeamViewController {
     @FXML
     public void addTeamMemberButton() {
         try {
-            model.getFocusProject().getTeam().addTeamMember(model.getEmployee(teamMembersInputField.getText()));
+            // if team member is already in the team throw an error
+            if (model.getTeamMemberNameList().contains(teamMembersInputField.getText().strip())) {
+                throw new IllegalArgumentException("Team Member is already in the team");
+            }
+
+            TeamMember teamMember = model.getEmployee(teamMembersInputField.getText().strip()).copy();
+            teamMember.setRole(roleComboBox.getValue());
+            model.getFocusProject().getTeam().addTeamMember(teamMember);
 
             reset();
         }
@@ -66,12 +83,14 @@ public class CreateTeamViewController {
 
     @FXML void removeTeamMemberButton() {
         try {
-            String name = teamMembersListView.getSelectionModel().getSelectedItem();
-            assert name != null;
+            TeamMemberViewModel selectedItem = teamMembersTable.getSelectionModel().getSelectedItem();
+
             if (confirmation()) {
-                TeamMember teamMember = model.getTeamMember(name);
+                TeamMember teamMember = model.getTeamMember(selectedItem.getNameProperty().get().strip());
+
                 model.getFocusProject().getTeam().removeTeamMember(teamMember);
-                teamMembersListView.getSelectionModel().clearSelection();
+                viewModel.removeTeamMember(teamMember);
+                teamMembersTable.getSelectionModel().clearSelection();
             }
             reset();
         }
@@ -81,15 +100,11 @@ public class CreateTeamViewController {
     }
 
     private boolean confirmation() {
-        String selectedItem = teamMembersListView.getSelectionModel().getSelectedItem();
-
-        if (selectedItem == null) {
-            throw new IllegalArgumentException("Please select an item");
-        }
+        TeamMemberViewModel selectedItem = teamMembersTable.getSelectionModel().getSelectedItem();
 
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
         alert.setTitle("Confirmation");
-        alert.setHeaderText("Removing the team member \"" + selectedItem + "\"");
+        alert.setHeaderText("Removing the team member \"" + selectedItem.getNameProperty().get() + "\"");
 
         Optional<ButtonType> result = alert.showAndWait();
         return result.isPresent() && result.get() == ButtonType.OK;

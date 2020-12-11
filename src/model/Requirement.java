@@ -1,10 +1,11 @@
 package model;
 
+import java.io.Serializable;
 import java.time.LocalDate;
 import java.util.Arrays;
 import java.util.Random;
 
-public class Requirement {
+public class Requirement implements Serializable {
     private String id;
     private String title;
     private String status;
@@ -12,6 +13,7 @@ public class Requirement {
     private String description;
     private LocalDate deadline;
     private LocalDate estimate;
+
     private int timeSpent;
 
     private TaskList taskList;
@@ -129,8 +131,12 @@ public class Requirement {
         return timeSpent;
     }
 
-    public void setTimeSpent(int timeSpent) {
-        this.timeSpent = timeSpent;
+    public void updateTimeSpent() {
+        int minutes = 0;
+        for (int i = 0; i < taskList.size(); i++) {
+            minutes += taskList.getTask(i).getTimeWorkedList().getTotalTimeWorked();
+        }
+        this.timeSpent = minutes;
     }
 
     private static String createReqID() {

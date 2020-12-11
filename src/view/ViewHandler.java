@@ -19,6 +19,7 @@ public class ViewHandler {
     private TaskViewController taskViewController;
 
     private CreateTeamViewController createTeamViewController;
+    private TimeSpentViewController timeSpentViewController;
 
     public ViewHandler(PMSModel model) {
         this.model = model;
@@ -39,6 +40,9 @@ public class ViewHandler {
             case "ProjectView":
                 root = loadProjectViewGUI("ProjectView.fxml");
                 break;
+            case "CreateTeamView":
+                root = loadCreateTeamViewGUI("CreateTeamView.fxml");
+                break;
             case  "RequirementListView":
                 root = loadRequirementListViewGUI("RequirementListView.fxml");
                 break;
@@ -51,9 +55,9 @@ public class ViewHandler {
             case "TaskView":
                 root = loadTaskViewGUI("TaskView.fxml");
                 break;
-            case "CreateTeamView":
-                root = loadCreateTeamViewGUI("CreateTeamView.fxml");
-                break;
+            case "TimeSpentView":
+                root = loadTimeSpentViewGUI("TimeSpentView.fxml");
+
         }
         currentScene.setRoot(root);
 
@@ -66,6 +70,9 @@ public class ViewHandler {
         primaryStage.setScene(currentScene);
         primaryStage.setWidth(root.getPrefWidth());
         primaryStage.setHeight(root.getPrefHeight());
+
+        //saveDataOnClosing
+        primaryStage.setOnCloseRequest(windowEvent -> model.saveData());
         primaryStage.show();
     }
 
@@ -204,5 +211,24 @@ public class ViewHandler {
             createTeamViewController.reset();
         }
         return createTeamViewController.getRoot();
+    }
+
+    public Region loadTimeSpentViewGUI(String fxmlFile) {
+        if (timeSpentViewController == null) {
+            try {
+                FXMLLoader loader = new FXMLLoader();
+                loader.setLocation(getClass().getResource(fxmlFile));
+                Region root = loader.load();
+                timeSpentViewController = loader.getController();
+                timeSpentViewController.init(this, model, root);
+            }
+            catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+        else {
+            timeSpentViewController.reset();
+        }
+        return timeSpentViewController.getRoot();
     }
 }

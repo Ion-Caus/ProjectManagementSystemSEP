@@ -83,12 +83,12 @@ public class TaskViewController {
             estimatePicker.setValue(model.getFocusTask().getEstimate());
 
             idField.setText(model.getFocusTask().getId());
-            hoursWorkedField.setText(Integer.toString(model.getFocusTask().getTimeSpent()));
+            hoursWorkedField.setText(Integer.toString(model.getFocusTask().getTimeWorkedList().getTotalTimeWorked()));
         }
         errorLabel.setText("");
 
         //add Responsible Team Member from Team List
-        TextFields.bindAutoCompletion(responsibleTeamMemberInputField, model.getFocusProject().getTeam().getTeamMemberNameList());
+        TextFields.bindAutoCompletion(responsibleTeamMemberInputField, model.getTeamMemberNameList());
 
         //formatting the Deadline DatePicker from MM/dd/yyyy to yyyy-MM-dd
         deadlinePicker.getEditor().setText(
@@ -110,37 +110,41 @@ public class TaskViewController {
         return root;
     }
 
+    private void createTask() {
+        // Add button was pressed
+        if (model.isAdding()) {
+            if (titleField.getText().isEmpty()) {
+                throw new IllegalArgumentException("Please enter the title of task first.");
+            }
+
+            model.addTask(new Task(
+                    titleField.getText(),
+                    statusBox.getSelectionModel().getSelectedItem(),
+                    descriptionArea.getText(),
+                    deadlinePicker.getValue(),
+                    estimatePicker.getValue(),
+                    model.getTeamMember(responsibleTeamMemberInputField.getText().strip())
+            ));
+        }
+        // View button was pressed
+        else {
+            model.getFocusTask().setTitle(titleField.getText());
+            model.getFocusTask().setDescription(descriptionArea.getText());
+            model.getFocusTask().setStatus(statusBox.getSelectionModel().getSelectedItem());
+            model.getFocusTask().setDeadline(deadlinePicker.getValue());
+            model.getFocusTask().setEstimate(estimatePicker.getValue());
+            model.getFocusTask().setResponsibleTeamMember(model.getTeamMember(responsibleTeamMemberInputField.getText().strip()));
+        }
+    }
+
     @FXML
     private void submitButtonPressed() {
         try {
-            // Add button was pressed
-            if (model.isAdding()) {
-                if (titleField.getText().isEmpty()) {
-                    throw new IllegalArgumentException("Please enter the title of task first.");
-                }
-
-                model.addTask(new Task(
-                        titleField.getText(),
-                        statusBox.getSelectionModel().getSelectedItem(),
-                        descriptionArea.getText(),
-                        deadlinePicker.getValue(),
-                        estimatePicker.getValue(),
-                        model.getTeamMember(responsibleTeamMemberInputField.getText())
-                ));
-            }
-            // View button was pressed
-            else {
-                model.getFocusTask().setTitle(titleField.getText());
-                model.getFocusTask().setDescription(descriptionArea.getText());
-                model.getFocusTask().setStatus(statusBox.getSelectionModel().getSelectedItem());
-                model.getFocusTask().setDeadline(deadlinePicker.getValue());
-                model.getFocusTask().setEstimate(estimatePicker.getValue());
-                model.getFocusTask().setResponsibleTeamMember(model.getTeamMember(responsibleTeamMemberInputField.getText()));
-            }
+            createTask();
             viewHandler.openView("TaskListView");
         }
         catch (IllegalArgumentException e) {
-            errorLabel.setText(e.getMessage() + "");
+            errorLabel.setText(e.getMessage());
         }
     }
 
@@ -153,6 +157,22 @@ public class TaskViewController {
     private void onEnter(ActionEvent event) {
         if (event.getSource() == titleField) {
             submitButtonPressed();
+        }
+    }
+
+    @FXML
+    private void addTimeSpentButton() {
+        try {
+            // set the focus to the last one (just created)
+            if (model.isAdding()) {
+                createTask();
+                model.setFocusTask(model.getFocusRequirement().getTaskList().getTask(model.taskListSize() - 1));
+                model.setAdding(false);
+            }
+            viewHandler.openView("TimeSpentView");
+        }
+        catch (Exception e) {
+            errorLabel.setText(e.getMessage());
         }
     }
 

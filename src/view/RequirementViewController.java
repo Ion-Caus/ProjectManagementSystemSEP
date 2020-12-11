@@ -102,7 +102,11 @@ public class RequirementViewController {
             // responsible Team Member
             responsibleTeamMemberInputField.setText(model.getFocusRequirement().getResponsibleTeamMember().getName());
 
+            // show id
             idField.setText(model.getFocusRequirement().getId());
+
+            // update and show time spent
+            model.getFocusRequirement().updateTimeSpent();
             hoursWorkedField.setText(Integer.toString(model.getFocusRequirement().getTimeSpent()));
 
             // Open Task List Button
@@ -111,7 +115,7 @@ public class RequirementViewController {
         errorLabel.setText("");
 
         //add Responsible Team Member from Team List
-        TextFields.bindAutoCompletion(responsibleTeamMemberInputField, model.getFocusProject().getTeam().getTeamMemberNameList());
+        TextFields.bindAutoCompletion(responsibleTeamMemberInputField, model.getTeamMemberNameList());
 
         //formatting the Deadline DatePicker from MM/dd/yyyy to yyyy-MM-dd
         deadlinePicker.getEditor().setText(
@@ -155,7 +159,7 @@ public class RequirementViewController {
                         descriptionArea.getText(),
                         deadlinePicker.getValue(),
                         estimatePicker.getValue(),
-                        model.getTeamMember(responsibleTeamMemberInputField.getText())
+                        model.getTeamMember(responsibleTeamMemberInputField.getText().strip())
                 ));
             }
             // View button was pressed
@@ -166,12 +170,12 @@ public class RequirementViewController {
                 model.getFocusRequirement().setType(typeBox.getSelectionModel().getSelectedItem());
                 model.getFocusRequirement().setDeadline(deadlinePicker.getValue());
                 model.getFocusRequirement().setEstimate(estimatePicker.getValue());
-                model.getFocusRequirement().setResponsibleTeamMember(model.getTeamMember(responsibleTeamMemberInputField.getText()));
+                model.getFocusRequirement().setResponsibleTeamMember(model.getTeamMember(responsibleTeamMemberInputField.getText().strip()));
             }
             viewHandler.openView("RequirementListView");
         }
         catch (IllegalArgumentException e) {
-            errorLabel.setText(e.getMessage() );
+            errorLabel.setText(e.getMessage());
         }
     }
     @FXML
