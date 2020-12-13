@@ -21,6 +21,7 @@ public class RequirementViewController {
     @FXML private TextField idField;
     @FXML private TextField hoursWorkedField;
     @FXML private Label errorLabel;
+    @FXML private Label pathLabel;
 
     @FXML private Button openTaskListButton;
 
@@ -77,6 +78,9 @@ public class RequirementViewController {
 
             // Open Task List Button
             openTaskListButton.setVisible(false);
+
+            // path
+            pathLabel.setText(model.getFocusProject().getName() + "/");
         }
         // View button was pressed
         else {
@@ -107,10 +111,13 @@ public class RequirementViewController {
 
             // update and show time spent
             model.getFocusRequirement().updateTimeSpent();
-            hoursWorkedField.setText(Integer.toString(model.getFocusRequirement().getTimeSpent()));
+            hoursWorkedField.setText( String.format("%.2f", (double)model.getFocusRequirement().getTimeSpent() / 60 ));
 
             // Open Task List Button
             openTaskListButton.setVisible(true);
+
+            // path
+            pathLabel.setText(model.getFocusProject().getName() + "/" + model.getFocusRequirement().getTitle());
         }
         errorLabel.setText("");
 

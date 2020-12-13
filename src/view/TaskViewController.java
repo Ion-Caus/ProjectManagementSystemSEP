@@ -20,6 +20,7 @@ public class TaskViewController {
     @FXML private TextField idField;
     @FXML private TextField hoursWorkedField;
     @FXML private Label errorLabel;
+    @FXML private Label pathLabel;
 
     @FXML private TextField responsibleTeamMemberInputField;
 
@@ -65,6 +66,9 @@ public class TaskViewController {
 
             idField.setText("");
             hoursWorkedField.setText("");
+
+            // path
+            pathLabel.setText(model.getFocusProject().getName() + "/" + model.getFocusRequirement().getTitle() + "/");
         }
         // View button was pressed
         else {
@@ -82,8 +86,14 @@ public class TaskViewController {
             // Estimate Picker
             estimatePicker.setValue(model.getFocusTask().getEstimate());
 
+            // responsible Team Member
+            responsibleTeamMemberInputField.setText(model.getFocusTask().getResponsibleTeamMember().getName());
+
             idField.setText(model.getFocusTask().getId());
-            hoursWorkedField.setText(Integer.toString(model.getFocusTask().getTimeWorkedList().getTotalTimeWorked()));
+            hoursWorkedField.setText( String.format("%.2f", (double) model.getFocusTask().getTimeWorkedList().getTotalTimeWorked() / 60 ));
+
+            // path
+            pathLabel.setText(model.getFocusProject().getName() + "/" + model.getFocusRequirement().getTitle() + "/" + model.getFocusTask().getTitle());
         }
         errorLabel.setText("");
 

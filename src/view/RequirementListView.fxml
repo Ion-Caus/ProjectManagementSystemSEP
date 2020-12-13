@@ -1,11 +1,19 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.geometry.Insets?>
+<?import javafx.geometry.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.Font?>
-<VBox alignment="CENTER" prefHeight="400.0" prefWidth="850.0" spacing="10.0" userData="Requirement List" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="view.RequirementListViewController">
+<VBox alignment="BOTTOM_CENTER" prefHeight="424.0" prefWidth="850.0" spacing="10.0" userData="Requirement List" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="view.RequirementListViewController">
    <children>
+      <Label fx:id="pathLabel" alignment="CENTER" contentDisplay="CENTER" prefHeight="17.0" prefWidth="865.0" text="project/" textAlignment="CENTER" textFill="#6b6b6b">
+         <VBox.margin>
+            <Insets />
+         </VBox.margin>
+         <padding>
+            <Insets top="5.0" />
+         </padding>
+      </Label>
       <HBox prefHeight="403.0" prefWidth="600.0">
          <children>
             <VBox alignment="CENTER" prefHeight="372.0" prefWidth="222.0" spacing="10.0">
@@ -47,7 +55,7 @@
                   <TableColumn fx:id="typeRequirementColumn" prefWidth="100.0" text="Type" />
                   <TableColumn fx:id="deadlineRequirementColumn" minWidth="0.0" prefWidth="100.0" text="Deadline" />
                   <TableColumn fx:id="estimateRequirementColumn" minWidth="0.0" prefWidth="100.0" text="Estimate" />
-                  <TableColumn fx:id="responsibleTeamMemberReqColumn" minWidth="0.0" prefWidth="100.0" text="Resposible" />
+                  <TableColumn fx:id="responsibleTeamMemberReqColumn" minWidth="0.0" prefWidth="100.0" text="Responsible" />
                </columns>
             </TableView>
          </children>

@@ -5,6 +5,8 @@ import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.layout.Region;
 import model.PMSModel;
+import model.ProductOwner;
+import model.ScrumMaster;
 import model.TeamMember;
 import org.controlsfx.control.textfield.TextFields;
 
@@ -51,8 +53,8 @@ public class CreateTeamViewController {
 
         // Role Combo Box
         roleComboBox.getItems().removeAll(roleComboBox.getItems());
-        roleComboBox.getItems().addAll(TeamMember.TEAM_MEMBER, TeamMember.PRODUCT_OWNER, TeamMember.SCRUM_MASTER);
-        roleComboBox.getSelectionModel().select(TeamMember.TEAM_MEMBER);
+        roleComboBox.getItems().addAll("Team Member", "Scrum Master", "Product Owner");
+        roleComboBox.getSelectionModel().selectFirst();
 
         // update the Team List
         viewModel.update();
@@ -70,9 +72,18 @@ public class CreateTeamViewController {
                 throw new IllegalArgumentException("Team Member is already in the team");
             }
 
-            TeamMember teamMember = model.getEmployee(teamMembersInputField.getText().strip()).copy();
-            teamMember.setRole(roleComboBox.getValue());
-            model.getFocusProject().getTeam().addTeamMember(teamMember);
+            TeamMember teamMember = model.getEmployee(teamMembersInputField.getText().strip());
+            switch (roleComboBox.getValue()) {
+                case "Team Member":
+                    model.getFocusProject().getTeam().addTeamMember(teamMember.copy());
+                    break;
+                case "Scrum Master":
+                    model.getFocusProject().getTeam().addTeamMember(new ScrumMaster(teamMember.getName()));
+                    break;
+                case "Product Owner":
+                    model.getFocusProject().getTeam().addTeamMember(new ProductOwner(teamMember.getName()));
+                    break;
+            }
 
             reset();
         }
