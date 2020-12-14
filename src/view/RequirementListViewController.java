@@ -1,11 +1,12 @@
 package view;
 
 import javafx.fxml.FXML;
-import javafx.scene.control.Label;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
+import javafx.scene.control.*;
 import javafx.scene.layout.Region;
 import model.PMSModel;
+import model.Requirement;
+
+import java.util.Optional;
 
 
 public class RequirementListViewController {
@@ -15,7 +16,10 @@ public class RequirementListViewController {
     @FXML private TableColumn<RequirementViewModel, String> statusRequirementColumn;
     @FXML private TableColumn<RequirementViewModel, String> typeRequirementColumn;
     @FXML private TableColumn<RequirementViewModel, String> deadlineRequirementColumn;
+    @FXML private TableColumn<RequirementViewModel, String> estimateRequirementColumn;
+    @FXML private TableColumn<RequirementViewModel, String> responsibleTeamMemberReqColumn;
     @FXML private Label errorLabel;
+    @FXML private Label pathLabel;
 
     private ViewHandler viewHandler;
     private PMSModel model;
@@ -38,13 +42,17 @@ public class RequirementListViewController {
         statusRequirementColumn.setCellValueFactory(cellData -> cellData.getValue().getStatusProperty());
         typeRequirementColumn.setCellValueFactory(cellData -> cellData.getValue().getTypeProperty());
         deadlineRequirementColumn.setCellValueFactory(cellData -> cellData.getValue().getDeadlineProperty());
+        estimateRequirementColumn.setCellValueFactory(cellData -> cellData.getValue().getEstimateProperty());
+        responsibleTeamMemberReqColumn.setCellValueFactory(cellData -> cellData.getValue().getResponsibleTeamMemberProperty());
         requirementListTable.setItems(viewModel.getRequirementList());
 
-        errorLabel.setText("");
+        reset();
     }
 
     public void reset() {
         errorLabel.setText("");
+        pathLabel.setText(model.getFocusProject().getName() + "/");
+
         viewModel.update();
     }
 
@@ -90,7 +98,33 @@ public class RequirementListViewController {
 
     @FXML
     private void removeRequirementButton() {
+        try {
+            RequirementViewModel selectItem = requirementListTable.getSelectionModel().getSelectedItem();
 
+            if (confirmation()) {
+                Requirement requirement = model.getRequirement(selectItem.getIdProperty().get());
+                model.removeRequirement(requirement);
+                viewModel.removeRequirement(requirement);
+                requirementListTable.getSelectionModel().clearSelection();
+            }
+        } catch (Exception e) {
+            errorLabel.setText("Please select an item");
+        }
+    }
+
+    public boolean confirmation() {
+        RequirementViewModel selectedItem = requirementListTable.getSelectionModel().getSelectedItem();
+
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+        alert.setTitle("Confirmation");
+        alert.setHeaderText(
+                "Removing the requirement \"" +
+                        selectedItem.getTitleProperty().get() + "\"\n" +
+                        "with the id: " + selectedItem.getIdProperty().get()
+        );
+
+        Optional<ButtonType> result = alert.showAndWait();
+        return result.isPresent() && result.get() == ButtonType.OK;
     }
 
     @FXML

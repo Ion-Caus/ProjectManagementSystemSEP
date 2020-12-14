@@ -1,9 +1,9 @@
 package view;
 
-import javafx.collections.*;
-
-import model.Project;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import model.PMSModel;
+import model.Project;
 
 public class ProjectListViewModel {
     private ObservableList<ProjectViewModel> projectList;

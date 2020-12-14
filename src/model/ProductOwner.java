@@ -1,28 +1,26 @@
 package model;
 
 public class ProductOwner extends TeamMember {
-
     public ProductOwner(String name) {
         super(name);
     }
 
-    public void approveRequirement(Requirement requirement){
-        requirement.setStatus(Requirement.STATUS_APPROVED);
-
+    @Override
+    public String getRole() {
+        return "Product Owner";
     }
 
-    public void rejectRequirement(Requirement requirement){
-        requirement.setStatus(Requirement.STATUS_REJECTED);
+    @Override
+    public boolean equals(Object obj) {
+        if (!(obj instanceof ProductOwner)) {
+            return false;
+        }
+
+        return super.equals(obj);
     }
 
-    public void addRequirement(Requirement requirement, Project project){
-        project.getRequirementList().addRequirement(requirement);
+    @Override
+    public ProductOwner copy() {
+        return new ProductOwner(super.getName());
     }
-
-    public void removeRequirement(Requirement requirement, Project project){
-        project.getRequirementList().removeRequirement(requirement);
-    }
-
-    // TODO: 05/12/2020 add method sort requirement
-    // TODO: 05/12/2020  add method prioritize requirement
 }

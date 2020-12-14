@@ -1,8 +1,10 @@
 package model;
 
+import java.io.Serializable;
+import java.time.LocalDate;
 import java.util.ArrayList;
 
-public class ProjectList {
+public class ProjectList implements Serializable {
     private ArrayList<Project> projects;
 
     public ProjectList() {
@@ -34,24 +36,13 @@ public class ProjectList {
     }
 
 
-    public Project getProject(MyDate deadline){
+    public Project getProject(LocalDate deadline){
         for(Project project: projects){
             if(project.getDeadline().equals(deadline))
                 return project;
         }
         throw new NullPointerException("Non-existent project");
     }
-
-    /*
-    public Project getProject(Team team) {
-        for (Project project: projects) {
-            if (project.getTeam().equals(team)) {
-                return project;
-            }
-        }
-        throw new NullPointerException("Non-existent project");
-    }
-    */
 
     public ArrayList<Project> getProjectList(String status){
         ArrayList<Project> temp = new ArrayList<>();

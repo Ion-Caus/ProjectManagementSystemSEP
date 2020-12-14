@@ -1,40 +1,37 @@
 package model;
 
-import java.sql.Time;
+import java.io.Serializable;
+import java.time.LocalDate;
 import java.util.Arrays;
 import java.util.Random;
 
-public class Task {
+public class Task implements Serializable {
     private String id;
     private String title;
     private String status;
     private String description;
-    private MyDate deadline;
-    private MyDate estimate;
-    //private int timeSpent;
-    private TeamMember teamMember;
-    private TimeContainer timeContainer;
+    private LocalDate deadline;
+    private LocalDate estimate;
 
-    //TODO private TeamMember teamMember;
+    private TimeContainer timeWorkedList;
+
+    private TeamMember responsibleTeamMember;
 
     public static final String STATUS_NOT_STARTED = "Not started";
     public static final String STATUS_IN_PROCESS = "In Process";
     public static final String STATUS_COMPLETED = "Completed";
 
-    //TODO implement MyDate estimate
-    public Task(String title, String status, String description, MyDate deadline) {//, MyDate estimate) {
+    public Task(String title, String status, String description, LocalDate deadline, LocalDate estimate, TeamMember responsibleTeamMember) {
         this.id = createTaskID();
 
         setTitle(title);
         setStatus(status);
         setDescription(description);
         setDeadline(deadline);
-        //setEstimate(estimate);
+        setEstimate(estimate);
+        setResponsibleTeamMember(responsibleTeamMember);
 
-    }
-
-    public void setTeamMember(TeamMember teamMember) {
-        this.teamMember = teamMember;
+        this.timeWorkedList = new TimeContainer();
     }
 
     public String getId() {
@@ -71,50 +68,51 @@ public class Task {
         this.description = (description == null) ? "" : description;
     }
 
-    public MyDate getDeadline() {
-        return deadline.copy();
+    public LocalDate getDeadline() {
+        return deadline;
     }
 
-    public void setDeadline(MyDate deadline) {
+    public void setDeadline(LocalDate deadline) {
         if (deadline == null) {
             throw new IllegalArgumentException("Null deadline given");
         }
-        this.deadline = deadline.copy();
+        this.deadline = deadline;
     }
 
-    public MyDate getEstimate() {
-        return estimate.copy();
+    public LocalDate getEstimate() {
+        return estimate;
     }
 
-    public void setEstimate(MyDate estimate) {
+    public void setEstimate(LocalDate estimate) {
         if (estimate == null) {
             throw new IllegalArgumentException("Null estimate given");
         }
-        this.estimate = estimate.copy();
+        this.estimate = estimate;
     }
 
-
-// TODO: 05/12/2020 remove
-  /*  public int getTimeSpent() {
-        return timeSpent;
+    public TeamMember getResponsibleTeamMember() {
+        return responsibleTeamMember;
     }
 
-    public void setTimeSpent(int timeSpent) {
-        this.timeSpent = timeSpent;
-    }*/
+    public TimeContainer getTimeWorkedList() {
+        return timeWorkedList;
+    }
+
+    public void setResponsibleTeamMember(TeamMember responsibleTeamMember) {
+        if (responsibleTeamMember == null) {
+            throw new IllegalArgumentException("Null responsible team member given");
+        }
+        this.responsibleTeamMember = responsibleTeamMember;
+    }
 
     private static String createTaskID() {
         Random random = new Random(System.currentTimeMillis());
-        return "T" + (10000 + random.nextInt(100000));
+        return  "T" + (10000 + random.nextInt(90000));
     }
 
     private static boolean validStatus(String status) {
-        String[] statuses = {STATUS_NOT_STARTED, STATUS_IN_PROCESS, STATUS_COMPLETED};
+        String[] statuses = {STATUS_NOT_STARTED,STATUS_IN_PROCESS,STATUS_COMPLETED};
         return Arrays.asList(statuses).contains(status);
-    }
-
-    public TeamMember getTeamMember() {
-        return teamMember;
     }
 
     @Override
@@ -124,24 +122,10 @@ public class Task {
                 ", title='" + title + '\'' +
                 ", status='" + status + '\'' +
                 ", description='" + description + '\'' +
-                ", deadline=" + deadline +
-                ", estimate=" + estimate +
-                ", timeSpent=" + timeContainer.getTimeWorked() +
+                ", deadline=" + deadline.toString() +
+                ", estimate=" + estimate.toString() +
+                ", responsibleTeamMember=" + responsibleTeamMember.getName() +
+                ", timeWorkedList= " +timeWorkedList +
                 '}';
     }
-
-
-    public void addTimeSpent(TeamMember teamMember, int minutes) {
-        timeContainer.setTimeWorked(teamMember, minutes);
-    }
-
-    public double getTimeSpent(TeamMember teamMember){
-       return this.timeContainer.getTimeWorked(teamMember);
-    }
-
-    public double getTimeSpent(){
-       return this.timeContainer.getTimeWorked();
-    }
-
-
 }
