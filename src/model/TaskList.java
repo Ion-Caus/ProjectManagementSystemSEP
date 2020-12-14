@@ -39,14 +39,6 @@ public class TaskList implements Serializable {
     return taskList;
   }
 
-  public double getTimeSpent(){
-    double minutes=0;
-    for (Task task: taskList){
-      minutes+= task.getTimeSpent();
-    }
-    return minutes;
 
-
-  }
 
 }
