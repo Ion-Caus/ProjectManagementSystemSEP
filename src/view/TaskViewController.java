@@ -4,7 +4,7 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.layout.Region;
-import model.PMSModel;
+import mediator.PMSModel;
 import model.Task;
 import org.controlsfx.control.textfield.TextFields;
 

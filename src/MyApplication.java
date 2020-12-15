@@ -1,8 +1,8 @@
 import javafx.application.Application;
 import javafx.stage.Stage;
 
-import model.PMSModel;
-import model.PMSModelManager;
+import mediator.PMSModel;
+import mediator.PMSModelManager;
 
 import view.ViewHandler;
 

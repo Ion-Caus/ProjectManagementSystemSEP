@@ -6,7 +6,11 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.layout.Region;
-import model.*;
+import mediator.PMSModel;
+import model.Project;
+import model.Requirement;
+import model.Task;
+import model.TeamMember;
 import org.controlsfx.control.textfield.AutoCompletionBinding;
 import org.controlsfx.control.textfield.TextFields;
 

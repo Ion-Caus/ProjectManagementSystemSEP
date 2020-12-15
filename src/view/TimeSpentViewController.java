@@ -7,7 +7,7 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.Region;
-import model.PMSModel;
+import mediator.PMSModel;
 import model.TeamMember;
 import org.controlsfx.control.textfield.TextFields;
 
