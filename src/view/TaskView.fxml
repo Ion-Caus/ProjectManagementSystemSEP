@@ -148,7 +148,7 @@
                   </HBox>
                   <HBox alignment="CENTER" prefHeight="35.0" prefWidth="370.0" spacing="10.0">
                      <children>
-                        <Label prefHeight="25.0" prefWidth="117.0" text="Hours worked">
+                        <Label prefHeight="25.0" prefWidth="123.0" text="Hours worked">
                            <font>
                               <Font size="16.0" />
                            </font>
