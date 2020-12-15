@@ -71,8 +71,8 @@ public class TaskList implements Serializable {
 
 
   /**
-   * will return all the requirements that are stored in the containing element
-   * @return an ArrayList containing all the instances of class Requirement
+   * will return all the tasks that are stored in the containing element
+   * @return an ArrayList containing all the instances of class Task
    */
   public ArrayList<Task> getTaskList() {
     return taskList;
