@@ -110,9 +110,6 @@ public class Project implements Serializable {
         this.timeSpent = minutes;
     }
 
-    //TODO public ProductOwner getProductOwner(){}
-    //TODO public ScrumMaster getScrumMaster(){}
-
     private static String createProjectID() {
         Random random = new Random(System.currentTimeMillis());
         return  "P" + (10000 + random.nextInt(90000));

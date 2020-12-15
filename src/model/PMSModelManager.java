@@ -2,6 +2,7 @@ package model;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 
 public class PMSModelManager implements PMSModel {
     private ProjectList projectList;
@@ -79,6 +80,20 @@ public class PMSModelManager implements PMSModel {
         return employeeList.getTeamMemberNameList();
     }
 
+    // ------ Team -----
+    @Override
+    public boolean isPresent(String role) throws ClassNotFoundException {
+        if (!Arrays.asList("ScrumMaster", "ProductOwner", "TeamMember").contains(role)) {
+            throw new IllegalArgumentException("Invalid role given. Roles: [ScrumMaster, ProductOwner, TeamMember]");
+        }
+        for (TeamMember teamMember: focusProject.getTeam().getTeamMemberList()) {
+            if (Class.forName("model." + role).isInstance(teamMember)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
     @Override
     public TeamMember getTeamMember(String name) {
         if (name == null || name.isEmpty()) {
@@ -97,6 +112,7 @@ public class PMSModelManager implements PMSModel {
     public TeamMember getTeamMember(int index) {
         return focusProject.getTeam().getTeamMember(index);
     }
+
 
     @Override
     public ArrayList<String> getTeamMemberNameList() {
@@ -133,6 +149,16 @@ public class PMSModelManager implements PMSModel {
     @Override
     public ArrayList<Project> getProjectList() {
         return projectList.getProjectList();
+    }
+
+    @Override
+    public ArrayList<String> getProjectNameList() {
+        ArrayList<String> names = new ArrayList<>();
+
+        for (Project project: projectList.getProjectList()) {
+            names.add(project.getName());
+        }
+        return names;
     }
 
 
@@ -179,6 +205,18 @@ public class PMSModelManager implements PMSModel {
     }
 
     @Override
+    public ArrayList<String> getRequirementTitleList() {
+        ArrayList<String> titles = new ArrayList<>();
+
+        for (Project project: projectList.getProjectList()) {
+            for (Requirement requirement: project.getRequirementList().getRequirementList()) {
+                titles.add(requirement.getTitle());
+            }
+        }
+        return titles;
+    }
+
+    @Override
     public void setFocusRequirement(Requirement requirement) {
         this.focusRequirement = requirement;
     }
@@ -218,6 +256,20 @@ public class PMSModelManager implements PMSModel {
     @Override
     public ArrayList<Task> getTaskList() {
         return focusRequirement.getTaskList().getTaskList();
+    }
+
+    @Override
+    public ArrayList<String> getTaskTitleList() {
+        ArrayList<String> titles = new ArrayList<>();
+
+        for (Project project: projectList.getProjectList()) {
+            for (Requirement requirement: project.getRequirementList().getRequirementList()) {
+                for (Task task: requirement.getTaskList().getTaskList()) {
+                    titles.add(task.getTitle());
+                }
+            }
+        }
+        return titles;
     }
 
     @Override

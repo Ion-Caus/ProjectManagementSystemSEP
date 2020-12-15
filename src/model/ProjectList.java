@@ -1,7 +1,6 @@
 package model;
 
 import java.io.Serializable;
-import java.time.LocalDate;
 import java.util.ArrayList;
 
 public class ProjectList implements Serializable {
@@ -36,16 +35,9 @@ public class ProjectList implements Serializable {
     }
 
 
-    public Project getProject(LocalDate deadline){
-        for(Project project: projects){
-            if(project.getDeadline().equals(deadline))
-                return project;
-        }
-        throw new NullPointerException("Non-existent project");
-    }
-
     public ArrayList<Project> getProjectList(String status){
         ArrayList<Project> temp = new ArrayList<>();
+
         for(Project project: projects){
             if(project.getStatus().equals(status))
                 temp.add(project);
@@ -56,6 +48,4 @@ public class ProjectList implements Serializable {
     public ArrayList<Project> getProjectList(){
         return this.projects;
     }
-
-
 }
