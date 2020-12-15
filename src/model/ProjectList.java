@@ -81,7 +81,7 @@ public class ProjectList implements Serializable {
         }
         throw new NullPointerException("Non-existent project");
     }
-    // TODO: 14/12/2020  Consult the methods getProject(deadline) and getProjectList, shouldn't the method getProject return a list of all project that are matching that deadline?
+    // TODO: 14/12/2020 by Tomas Brezny  Consult the methods getProject(deadline) and getProjectList, shouldn't the method getProject return a list of all project that are matching that deadline?
     /**
      * will return an ArrayList containing all projects whose status matches with the status provided
      * @param status status of the project as a String

@@ -27,7 +27,7 @@ public class RequirementList implements Serializable {
 
     /**
      * adding a new instance of the class Requirement to the containing Arraylist
-     * @param requirement the requirement as an object of type Project
+     * @param requirement the requirement as an object of type Requirement
      */
     public void addRequirement(Requirement requirement) {
         requirementList.add(requirement);
@@ -67,10 +67,15 @@ public class RequirementList implements Serializable {
         return null;
     }
 
+    /**
+     * will return all the requirements that are stored in the containing element
+     * @return an ArrayList containing all the instances of class Requirement
+     */
     public ArrayList<Requirement> getRequirementList() {
         return requirementList;
     }
 
+    // TODO: 15/12/2020 by Tomas Brezny probably delete, no usages found, this was the method i wrote when we thought that even project is going to have total time spent
     public double getTimeSpent(){
        double minutes=0;
        for (Requirement requirement:requirementList){

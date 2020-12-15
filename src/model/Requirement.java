@@ -41,8 +41,8 @@ public class Requirement implements Serializable {
      * @param type  the type of the requirement(functional, non functional, project-related) in a form of String
      * @param description  the description of the requirement in a form of a String
      * @param deadline the date when requirement needs to be finished in a form of a LocalDate
-     * @param estimate the estimated date of the project completion in a form of a LocalDate
-     * @param responsibleTeamMember the TeamMember responsible for the Requirement, selected from Projects assigned team
+     * @param estimate the estimated date of the requirement completion in a form of a LocalDate
+     * @param responsibleTeamMember the TeamMember responsible for the Requirement, selected from team assigned to Project
      * @see TeamMember
      * @see Team
      * @see Project
@@ -91,7 +91,7 @@ public class Requirement implements Serializable {
     }
 
     /**
-     * @return the Requirement's status in a form a String
+     * @return the Requirement status in a form a String
      */
     public String getStatus() {
         return status;
@@ -99,7 +99,7 @@ public class Requirement implements Serializable {
 
     /**
      * checking if status is not empty and is valid, assigning the status
-     * @param status the projects status selected from final variables
+     * @param status the requirement status selected from final variables
      * @exception IllegalArgumentException will be thrown in case the provided status does not match with any of the final variables that are holding the legal statuses
      */
     public void setStatus(String status) {
@@ -223,8 +223,8 @@ public class Requirement implements Serializable {
     }
 
     /**
-     * creates requirement ID by combining letter R, whhich stands for requirement, with random number
-     * @return letter R combiner with random number in a form of a String
+     * creates requirement ID by combining letter R, which stands for requirement, with random number
+     * @return letter R combined with random number in a form of a String
      */
     private static String createReqID() {
         Random random = new Random(System.currentTimeMillis());
