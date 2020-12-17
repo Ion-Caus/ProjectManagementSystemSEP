@@ -101,6 +101,14 @@ public class ProjectViewController {
         }
         errorLabel.setText("");
 
+        // setting limits to deadline
+        deadlinePicker.setDayCellFactory(dateCell -> new DateCell() {
+            @Override
+            public void updateItem(LocalDate item, boolean empty) {
+                super.updateItem(item, empty);
+                // from current date
+                setDisable(item.isBefore(LocalDate.now()));
+            }});
         //formatting the Deadline DatePicker from MM/dd/yyyy to yyyy-MM-dd
         deadlinePicker.getEditor().setText(
                 DateTimeFormatter.ofPattern("yyyy-MM-dd").format(deadlinePicker.getValue())
@@ -108,6 +116,16 @@ public class ProjectViewController {
         deadlinePicker.setOnAction(event -> deadlinePicker.getEditor().setText(
                 DateTimeFormatter.ofPattern("yyyy-MM-dd").format(deadlinePicker.getValue())
         ));
+
+
+        // setting limits to estimate
+        estimatePicker.setDayCellFactory(dateCell -> new DateCell() {
+            @Override
+            public void updateItem(LocalDate item, boolean empty) {
+                super.updateItem(item, empty);
+                // from current date until deadline
+                setDisable(item.isBefore(LocalDate.now()) || item.isAfter(deadlinePicker.getValue()));
+            }});
         //formatting the Estimate DatePicker from MM/dd/yyyy to yyyy-MM-dd
         estimatePicker.getEditor().setText(
                 DateTimeFormatter.ofPattern("yyyy-MM-dd").format(estimatePicker.getValue())
@@ -115,6 +133,7 @@ public class ProjectViewController {
         estimatePicker.setOnAction(event -> estimatePicker.getEditor().setText(
                 DateTimeFormatter.ofPattern("yyyy-MM-dd").format(estimatePicker.getValue())
         ));
+
     }
 
     public Region getRoot() {
@@ -177,9 +196,9 @@ public class ProjectViewController {
     @FXML
     private void addTeamMemberButton() {
         try {
-            // set the focus to the last one (just created)
             if (model.isAdding()) {
                 createProject();
+                // set the focus to the last one (just created)
                 model.setFocusProject(model.getProjectList().get(model.projectListSize() - 1));
                 model.setAdding(false);
             }

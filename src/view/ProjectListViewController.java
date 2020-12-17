@@ -238,28 +238,35 @@ public class ProjectListViewController {
     private void searchButtonPressed() {
         ObservableList<String > items = FXCollections.observableArrayList();
 
+        searchInputField.setText(searchInputField.getText().strip());
+        // if user entered the id or the name
+        String identifier = searchInputField.getText().matches("[PRTprt]\\d+") ? "the project with the ID" : "all the projects with the name";
+
+
         switch (choiceBox.getValue()) {
             // search by project name
             case "Project":
-                infoLabelSearch.setText("The list contains all the projects with the name '" + searchInputField.getText().strip() + "'");
+                infoLabelSearch.setText("The list contains " + identifier + " '" + searchInputField.getText() + "'");
                 for (Project project : model.getProjectList()) {
-                    if (project.getName().equals(searchInputField.getText().strip())) {
+                    if ( project.getName().equals(searchInputField.getText()) ||
+                            project.getId().equals(searchInputField.getText()) ) {
                         items.add(project.getId() + "  " + project.getName());
                     }
                 }
                 break;
             // search by requirement name
             case "Requirement":
-                infoLabelSearch.setText("The list contains all the requirements with the name '" + searchInputField.getText().strip() + "'");
+                infoLabelSearch.setText("The list contains " + identifier + " '" + searchInputField.getText() + "'");
                 for (Project project : model.getProjectList()) {
                     for (Requirement requirement : project.getRequirementList().getRequirementList()) {
-                        if (requirement.getTitle().equals(searchInputField.getText().strip())) {
+                        if ( requirement.getTitle().equals(searchInputField.getText()) ||
+                                requirement.getId().equals(searchInputField.getText()) ) {
                             items.add(String.format(
-                                    "%s  %s  (%s  %s)",
+                                    "%s  %s  (%s/%s)",
                                     requirement.getId(),
                                     requirement.getTitle(),
-                                    project.getId(),
-                                    project.getName()
+                                    project.getName(),
+                                    requirement.getTitle()
                             ));
                         }
                     }
@@ -267,17 +274,19 @@ public class ProjectListViewController {
                 break;
             // search by task name
             case "Task":
-                infoLabelSearch.setText("The list contains all the task with the name '" + searchInputField.getText().strip() + "'");
+                infoLabelSearch.setText("The list contains " + identifier + " '" + searchInputField.getText() + "'");
                 for (Project project : model.getProjectList()) {
                     for (Requirement requirement : project.getRequirementList().getRequirementList()) {
                         for (Task task : requirement.getTaskList().getTaskList()) {
-                            if (task.getTitle().equals(searchInputField.getText().strip())) {
+                            if ( task.getTitle().equals(searchInputField.getText()) ||
+                                    task.getId().equals(searchInputField.getText()) ) {
                                 items.add(String.format(
-                                        "%s  %s (%s/%s/)",
+                                        "%s  %s (%s/%s/%s)",
                                         task.getId(),
                                         task.getTitle(),
                                         project.getName(),
-                                        requirement.getTitle()
+                                        requirement.getTitle(),
+                                        task.getTitle()
                                 ));
                             }
                         }
@@ -286,17 +295,19 @@ public class ProjectListViewController {
                 break;
             // search task by task employee
             case "Employee":
-                infoLabelSearch.setText("The list contains all the tasks '" + searchInputField.getText().strip() + "' is responsible for.");
+                infoLabelSearch.setText("The list contains all the tasks '" + searchInputField.getText() + "' is responsible for.");
+
                 for (Project project : model.getProjectList()) {
                     for (Requirement requirement : project.getRequirementList().getRequirementList()) {
                         for (Task task : requirement.getTaskList().getTaskList()) {
-                            if (task.getResponsibleTeamMember().getName().equals(searchInputField.getText().strip())) {
+                            if (task.getResponsibleTeamMember().getName().equals(searchInputField.getText())) {
                                 items.add(String.format(
-                                        "%s  %s (%s/%s/)",
+                                        "%s  %s (%s/%s/%s)",
                                         task.getId(),
                                         task.getTitle(),
                                         project.getName(),
-                                        requirement.getTitle()
+                                        requirement.getTitle(),
+                                        task.getTitle()
                                 ));
                             }
                         }
@@ -313,8 +324,8 @@ public class ProjectListViewController {
             String selectedItem = resultListView.getSelectionModel().getSelectedItem();
 
             model.setAdding(false);
-            switch (choiceBox.getValue()) {
-                case "Project":
+            switch (selectedItem.split(" ")[0].charAt(0)) {
+                case 'P':
                     for (Project project : model.getProjectList()) {
                         if (project.getId().equals(selectedItem.split(" ")[0])) {
                             model.setFocusProject(project);
@@ -322,7 +333,7 @@ public class ProjectListViewController {
                         }
                     }
                     break;
-                case "Requirement":
+                case 'R':
                     for (Project project : model.getProjectList()) {
                         for (Requirement requirement : project.getRequirementList().getRequirementList()) {
                             if (requirement.getId().equals(selectedItem.split(" ")[0])) {
@@ -333,8 +344,7 @@ public class ProjectListViewController {
                         }
                     }
                     break;
-                case "Task":
-                case "Employee":
+                case 'T':
                     for (Project project : model.getProjectList()) {
                         for (Requirement requirement : project.getRequirementList().getRequirementList()) {
                             for (Task task : requirement.getTaskList().getTaskList()) {
@@ -358,7 +368,7 @@ public class ProjectListViewController {
     @FXML
     private void updateSearchAutocompletion() {
         infoLabelSearch.setText("");
-        resultListView.getItems().clear();
+
         // clear the auto completion list
         autoCompletionBinding.dispose();
 

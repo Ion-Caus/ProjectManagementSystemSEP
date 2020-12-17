@@ -62,13 +62,11 @@ public class RequirementViewController {
 
             // Deadline Picker
             deadlinePicker.setEditable(false);
-            // setting the default deadline in 2 weeks
-            deadlinePicker.setValue(LocalDate.now().plusDays(14));
+            deadlinePicker.setValue(LocalDate.now());
 
             // Estimate Picker
             estimatePicker.setEditable(false);
-            // setting the default deadline in 1 weeks
-            estimatePicker.setValue(LocalDate.now().plusDays(7));
+            estimatePicker.setValue(LocalDate.now());
 
             // responsible Team Member
             responsibleTeamMemberInputField.setText("");
@@ -124,6 +122,15 @@ public class RequirementViewController {
         //add Responsible Team Member from Team List
         TextFields.bindAutoCompletion(responsibleTeamMemberInputField, model.getTeamMemberNameList());
 
+        // setting limits to deadline
+        deadlinePicker.setDayCellFactory(dateCell -> new DateCell() {
+            @Override
+            public void updateItem(LocalDate item, boolean empty) {
+                super.updateItem(item, empty);
+                // from current date until project's deadline
+                setDisable(item.isBefore(LocalDate.now()) || item.isAfter(model.getFocusProject().getDeadline()));
+            }});
+
         //formatting the Deadline DatePicker from MM/dd/yyyy to yyyy-MM-dd
         deadlinePicker.getEditor().setText(
                 DateTimeFormatter.ofPattern("yyyy-MM-dd").format(deadlinePicker.getValue())
@@ -131,6 +138,15 @@ public class RequirementViewController {
         deadlinePicker.setOnAction(event -> deadlinePicker.getEditor().setText(
                 DateTimeFormatter.ofPattern("yyyy-MM-dd").format(deadlinePicker.getValue())
         ));
+
+        // setting limits to estimate
+        estimatePicker.setDayCellFactory(dateCell -> new DateCell() {
+            @Override
+            public void updateItem(LocalDate item, boolean empty) {
+                super.updateItem(item, empty);
+                // from current date until project's estimate
+                setDisable(item.isBefore(LocalDate.now()) || item.isAfter(model.getFocusProject().getEstimate()));
+            }});
         //formatting the Estimate DatePicker from MM/dd/yyyy to yyyy-MM-dd
         estimatePicker.getEditor().setText(
                 DateTimeFormatter.ofPattern("yyyy-MM-dd").format(estimatePicker.getValue())
@@ -179,6 +195,12 @@ public class RequirementViewController {
                 model.getFocusRequirement().setEstimate(estimatePicker.getValue());
                 model.getFocusRequirement().setResponsibleTeamMember(model.getTeamMember(responsibleTeamMemberInputField.getText().strip()));
             }
+
+            if (statusBox.getSelectionModel().getSelectedItem().equals(Requirement.STATUS_APPROVED) &&
+                    !model.isAdding() ) {
+                model.getFocusProject().updateStatus();
+            }
+
             viewHandler.openView("RequirementListView");
         }
         catch (IllegalArgumentException e) {
