@@ -65,7 +65,7 @@ public class CreateTeamViewController {
     }
 
     @FXML
-    public void addTeamMemberButton() {
+    private void addTeamMemberButton() {
         try {
             // if team member is already in the team throw an error
             if (model.getTeamMemberNameList().contains(teamMembersInputField.getText().strip())) {
@@ -98,7 +98,7 @@ public class CreateTeamViewController {
         }
     }
 
-    @FXML void removeTeamMemberButton() {
+    @FXML private void removeTeamMemberButton() {
         try {
             TeamMemberViewModel selectedItem = teamMembersTable.getSelectionModel().getSelectedItem();
 
@@ -116,7 +116,7 @@ public class CreateTeamViewController {
         }
     }
 
-    private boolean confirmation() {
+    public boolean confirmation() {
         TeamMemberViewModel selectedItem = teamMembersTable.getSelectionModel().getSelectedItem();
 
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
@@ -127,7 +127,7 @@ public class CreateTeamViewController {
         return result.isPresent() && result.get() == ButtonType.OK;
     }
 
-    @FXML void backButtonPressed() {
+    @FXML private void backButtonPressed() {
         viewHandler.openView("ProjectView");
     }
 
